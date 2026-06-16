@@ -33,14 +33,6 @@ export default function Dashboard() {
                 <div>
                     <OverviewHCDevelopmentCost />
                 </div>
-                <div className="grid gap-4 sm:grid-cols-3">
-                    <div className="col-span-2 rounded-sm border-[1.5px] overflow-hidden">
-                        <OverviewCostByDivision />
-                    </div>
-                    <div className="col-span-1">
-                        <div>Test</div>
-                    </div>
-                </div>
                 <Tabs defaultValue="overview" className="w-[400px]">
                     <TabsList>
                         <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -53,8 +45,16 @@ export default function Dashboard() {
                         <TabsTrigger value="regional-8">Regional 8</TabsTrigger>
                     </TabsList>
                 </Tabs>
-                <div className="relative min-h-screen flex-1 overflow-hidden border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
+                <div>
                     <OverviewHCDevelopmentCost />
+                </div>
+                <div className="grid gap-4 sm:grid-cols-3">
+                    <div className="col-span-2 overflow-hidden rounded-sm border-[1.5px]">
+                        <OverviewCostByDivision />
+                    </div>
+                    <div className="col-span-1">
+                        <div>Test</div>
+                    </div>
                 </div>
                 <div className="relative min-h-screen flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
                     <ChartLineTotalLearningDurations />

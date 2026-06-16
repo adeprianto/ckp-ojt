@@ -43,7 +43,7 @@ const chartOptions: Highcharts.Options = {
     yAxis: [
         {
             title: {
-                text: 'Biaya',
+                text: 'Biaya (Rp. 000)',
                 style: {
                     color: 'var(--highcharts-color-1)',
                 },
@@ -58,9 +58,44 @@ const chartOptions: Highcharts.Options = {
     ],
     tooltip: {
         shared: true,
+        useHTML: true, // This is the magic flag that lets us use custom CSS and HTML
+
+        // --- 1. Outer Box Styling ---
+        backgroundColor: 'rgba(255, 255, 255, 0.95)', // Use 'rgba(30,30,30, 0.9)' for a dark theme
+        borderColor: '#e6e6e6',
+        borderWidth: 1,
+        borderRadius: 8, // Gives it nice rounded corners
+        padding: 12, // Gives the text room to breathe
+        shadow: true,
+        style: {
+            color: '#333333', // Font color (use '#ffffff' for dark theme)
+            fontFamily: 'sans-serif',
+            fontSize: '13px',
+        },
+
+        // --- 2. Title (Header) ---
+        // Adds a bold title with a subtle line underneath
+        headerFormat:
+            '<div style="font-size: 10px; font-weight: bold; border-bottom: 1px solid #eeeeee; padding-bottom: 6px; margin-bottom: 6px;">{point.key}</div><table style="width: 100%;">',
+
+        // --- 3. Body (The Data Rows) ---
+        // Uses a table to perfectly align the series name on the left and the value on the right
+        pointFormat:
+            '<tr>' +
+            '<td style="padding: 3px 15px 3px 0; font-size: 10px">' +
+            '<span style="color:{series.color}; font-size: 10px;">\u25CF</span> {series.name}:' +
+            '</td>' +
+            '<td style="padding: 3px 0; text-align: right; font-size: 10px">' +
+            '<b>Rp. {point.y:,.0f}</b>' +
+            '</td>' +
+            '</tr>',
+
+        // --- 4. Footer ---
+        footerFormat: '</table>',
         valueDecimals: 0,
     },
     legend: {
+        enabled: false,
         layout: 'vertical',
         align: 'left',
         x: 130,
@@ -79,6 +114,27 @@ const chartOptions: Highcharts.Options = {
         },
     },
     series: [
+        // --- TREND LINES ---
+        {
+            name: 'RKAP',
+            type: 'spline',
+            yAxis: 0,
+            data: Object.values(RKAP_PER_REGIONAL).map((monthData) => {
+                return Object.values(monthData).reduce(
+                    (total, regionalData) => {
+                        return total + regionalData.rkap / 1000;
+                    },
+                    0,
+                );
+            }),
+            marker: {
+                enabled: false,
+            },
+            tooltip: {
+                valuePrefix: 'Rp. ',
+            },
+        },
+
         // --- STACKED BARS PER REGION ---
         {
             name: 'HO',
@@ -146,25 +202,6 @@ const chartOptions: Highcharts.Options = {
 
         // --- TREND LINES ---
         {
-            name: 'RKAP',
-            type: 'spline',
-            yAxis: 0,
-            data: Object.values(RKAP_PER_REGIONAL).map((monthData) => {
-                return Object.values(monthData).reduce(
-                    (total, regionalData) => {
-                        return total + regionalData.rkap / 1000;
-                    },
-                    0,
-                );
-            }),
-            marker: {
-                enabled: false,
-            },
-            tooltip: {
-                valuePrefix: 'Rp. ',
-            },
-        },
-        {
             name: 'Total Realisasi',
             type: 'spline',
             yAxis: 0,
@@ -193,6 +230,7 @@ const chartOptions: Highcharts.Options = {
                 },
                 chartOptions: {
                     legend: {
+                        enabled: false,
                         floating: false,
                         layout: 'horizontal',
                         align: 'center',
