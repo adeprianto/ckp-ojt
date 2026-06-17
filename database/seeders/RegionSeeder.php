@@ -15,13 +15,14 @@ class RegionSeeder extends Seeder
     public function run(): void
     {
         $regions = [
-            'Head Office',
-            'Regional I',
-            'Regional II',
-            'Regional III',
-            'Regional V',
-            'Regional VII',
-            'Regional VIII',
+            "SUPPCO HO",
+            "SUPPCO REG 01",
+            "SUPPCO REG 02",
+            "SUPPCO REG 03",
+            "SUPPCO REG 05",
+            "SUPPCO REG 07",
+            "SUPPCO REG 08",
+            "SUPPCO REG 04",
         ];
 
         // Capture the current timestamp to populate created_at and updated_at

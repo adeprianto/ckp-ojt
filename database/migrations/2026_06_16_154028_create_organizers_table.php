@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('positions', function (Blueprint $table) {
+        Schema::create('organizers', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_organisasi');
-            $table->string('kode_jabatan');
-            $table->string('kelompok_jabatan');
-            $table->integer('bod_level');
-            $table->string('nama_jabatan');
-            $table->integer('id_jobfamily');
-            $table->string('komoditas');
+            $table->string('name');
+            $table->boolean('is_ptpn_group')->default(false);
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('positions');
+        Schema::dropIfExists('organizers');
     }
 };
