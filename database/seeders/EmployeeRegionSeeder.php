@@ -21,22 +21,29 @@ class EmployeeRegionSeeder extends Seeder
 
             if (str_contains($employeeRegion, 'REG 01')) {
                 $region = $regions->firstWhere('region_name', '=', 'SUPPCO REG 01');
+                $employee->region_id = $region->id;
             } elseif (str_contains($employeeRegion, 'REG 02')) {
                 $region = $regions->firstWhere('region_name', '=', 'SUPPCO REG 02');
+                $employee->region_id = $region->id;
             } elseif (str_contains($employeeRegion, 'REG 03')) {
                 $region = $regions->firstWhere('region_name', '=', 'SUPPCO REG 03');
+                $employee->region_id = $region->id;
             } elseif (str_contains($employeeRegion, 'REG 04')) {
                 $region = $regions->firstWhere('region_name', '=', 'SUPPCO REG 04');
+                $employee->region_id = $region->id;
             } elseif (str_contains($employeeRegion, 'REG 05')) {
                 $region = $regions->firstWhere('region_name', '=', 'SUPPCO REG 05');
+                $employee->region_id = $region->id;
             } elseif (str_contains($employeeRegion, 'REG 07')) {
                 $region = $regions->firstWhere('region_name', '=', 'SUPPCO REG 07');
+                $employee->region_id = $region->id;
             } elseif (str_contains($employeeRegion, 'REG 08')) {
                 $region = $regions->firstWhere('region_name', '=', 'SUPPCO REG 08');
+                $employee->region_id = $region->id;
             } else {
                 $region = $regions->firstWhere('region_name', '=', 'SUPPCO HO');
+                $employee->region_id = $region->id;
             }
-            $employee->region_id = $region->id;
 
             $employee->save();
         }

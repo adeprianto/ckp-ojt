@@ -33,7 +33,7 @@ import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
-import type { BreadcrumbItem, NavItem } from '@/types';
+import type { BreadcrumbItem, NavItem, NavLink } from '@/types';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -101,7 +101,9 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                             {mainNavItems.map((item) => (
                                                 <Link
                                                     key={item.title}
-                                                    href={item.href}
+                                                    href={
+                                                        (item as NavLink).href
+                                                    }
                                                     className="flex items-center space-x-2 font-medium"
                                                 >
                                                     {item.icon && (
@@ -116,7 +118,9 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                             {rightNavItems.map((item) => (
                                                 <a
                                                     key={item.title}
-                                                    href={toUrl(item.href)}
+                                                    href={toUrl(
+                                                        (item as NavLink).href,
+                                                    )}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="flex items-center space-x-2 font-medium"
@@ -152,11 +156,11 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                         className="relative flex h-full items-center"
                                     >
                                         <Link
-                                            href={item.href}
+                                            href={(item as NavLink).href}
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
                                                 whenCurrentUrl(
-                                                    item.href,
+                                                    (item as NavLink).href,
                                                     activeItemStyles,
                                                 ),
                                                 'h-9 cursor-pointer px-3',
@@ -167,7 +171,9 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                             )}
                                             {item.title}
                                         </Link>
-                                        {isCurrentUrl(item.href) && (
+                                        {isCurrentUrl(
+                                            (item as NavLink).href,
+                                        ) && (
                                             <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
                                         )}
                                     </NavigationMenuItem>
@@ -190,7 +196,9 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                     <Tooltip key={item.title}>
                                         <TooltipTrigger>
                                             <a
-                                                href={toUrl(item.href)}
+                                                href={toUrl(
+                                                    (item as NavLink).href,
+                                                )}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="group inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
@@ -219,10 +227,12 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                     <Avatar className="size-8 overflow-hidden rounded-full">
                                         <AvatarImage
                                             src={auth.user?.avatar}
-                                            alt={auth.user?.name}
+                                            alt={auth.user?.username}
                                         />
                                         <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {getInitials(auth.user?.name ?? '')}
+                                            {getInitials(
+                                                auth.user?.username ?? '',
+                                            )}
                                         </AvatarFallback>
                                     </Avatar>
                                 </Button>

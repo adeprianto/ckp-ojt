@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,9 +18,10 @@ class DatabaseSeeder extends Seeder
             PositionCsvSeeder::class,
             DivisionSeeder::class,
             RegionSeeder::class,
-            UnitSeeder::class,
             EmployeeCsvSeeder::class,
             EmployeePositionSeeder::class,
+            UnitCsvSeeder::class,
+            EmployeeUnitSeeder::class,
         ]);
     }
 }

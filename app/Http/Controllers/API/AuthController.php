@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
@@ -19,5 +21,10 @@ class AuthController extends Controller
         ]);
 
         return redirect('/login')->with('success', 'User created successfully');
+    }
+
+    public function login(LoginRequest $request)
+    {
+        return app(AuthenticatedSessionController::class)->store($request);
     }
 }
