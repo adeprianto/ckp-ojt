@@ -1,7 +1,15 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import {
+    BookOpen,
+    FileChartColumnIncreasing,
+    Files,
+    FolderGit2,
+    LayoutGrid,
+    ListStart,
+    Users,
+    Map
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -13,27 +21,67 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
-import type { NavItem } from '@/types';
+import {dashboard} from '@/routes'
+import type { NavGroup, NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const dashboardNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Monitoring',
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Maps',
+        href: dashboard(),
+        icon: Map,
+    },
 ];
 
-const footerNavItems: NavItem[] = [
+const reportNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
+        title: 'Laporan',
+        icon: Files,
+        items: [
+            {
+                title: 'Produksi Harian',
+                icon: FileChartColumnIncreasing,
+                href: dashboard(),
+            },
+        ],
+    },
+];
+
+const personilNavItems: NavItem[] = [
+    {
+        title: 'Karyawan',
+        icon: Users,
+        items: [
+            {
+                title: 'Management Karyawan',
+                icon: Users,
+                href: dashboard(),
+            },
+            {
+                title: 'Pemetaan Karyawan',
+                icon: ListStart,
+                href: dashboard(),
+            },
+        ],
+    },
+];
+
+const navItems: NavGroup[] = [
+    {
+        title: 'Dashboard',
+        items: dashboardNavItems,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
+        title: 'Laporan',
+        items: reportNavItems,
+    },
+    {
+        title: 'Personil',
+        items: personilNavItems,
     },
 ];
 
@@ -53,11 +101,10 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={navItems} />
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

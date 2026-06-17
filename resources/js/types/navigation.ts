@@ -1,14 +1,31 @@
 import type { InertiaLinkProps } from '@inertiajs/react';
 import type { LucideIcon } from 'lucide-react';
 
-export type BreadcrumbItem = {
+export interface BreadcrumbItem {
     title: string;
-    href: NonNullable<InertiaLinkProps['href']>;
-};
+    href: string;
+}
 
-export type NavItem = {
+export type BaseNavItem = {
     title: string;
-    href: NonNullable<InertiaLinkProps['href']>;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    badge?: string;
 };
+
+export type NavLink = BaseNavItem & {
+    href: NonNullable<InertiaLinkProps['href']>;
+    items?: never;
+};
+
+export type NavCollapsible = BaseNavItem & {
+    items: (BaseNavItem & { href: NonNullable<InertiaLinkProps['href']> })[];
+    href?: never;
+};
+
+export type NavItem = NavCollapsible | NavLink;
+
+export interface NavGroup {
+    title: string;
+    items: NavItem[];
+}
