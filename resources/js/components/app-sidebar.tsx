@@ -1,13 +1,9 @@
 import { Link } from '@inertiajs/react';
 import {
-    BookOpen,
     FileChartColumnIncreasing,
-    Files,
-    FolderGit2,
     LayoutGrid,
     ListStart,
     Users,
-    Map
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
@@ -21,52 +17,39 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import {dashboard} from '@/routes'
+import { home as dashboardHome, reports } from '@/routes/dashboard';
+import {
+    organizer as dashboardMasterDataOrginizer,
+    training as dashboardMasterDataTraining,
+} from '@/routes/dashboard/master';
 import type { NavGroup, NavItem } from '@/types';
 
 const dashboardNavItems: NavItem[] = [
     {
         title: 'Monitoring',
-        href: dashboard(),
+        href: dashboardHome(),
         icon: LayoutGrid,
-    },
-    {
-        title: 'Maps',
-        href: dashboard(),
-        icon: Map,
     },
 ];
 
 const reportNavItems: NavItem[] = [
     {
-        title: 'Laporan',
-        icon: Files,
-        items: [
-            {
-                title: 'Produksi Harian',
-                icon: FileChartColumnIncreasing,
-                href: dashboard(),
-            },
-        ],
+        title: 'Laporan Pelatihan',
+        icon: FileChartColumnIncreasing,
+        href: reports(),
     },
 ];
 
 const personilNavItems: NavItem[] = [
     {
-        title: 'Karyawan',
+        title: 'Penyelenggara Pelatihan',
         icon: Users,
-        items: [
-            {
-                title: 'Management Karyawan',
-                icon: Users,
-                href: dashboard(),
-            },
-            {
-                title: 'Pemetaan Karyawan',
-                icon: ListStart,
-                href: dashboard(),
-            },
-        ],
+        href: dashboardMasterDataOrginizer(),
+    },
+    {
+        title: 'Pelatihan',
+        icon: ListStart,
+        href: dashboardMasterDataTraining(),
     },
 ];
 
@@ -80,7 +63,7 @@ const navItems: NavGroup[] = [
         items: reportNavItems,
     },
     {
-        title: 'Personil',
+        title: 'Master Data',
         items: personilNavItems,
     },
 ];
@@ -92,7 +75,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={dashboardHome()} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

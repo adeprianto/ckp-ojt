@@ -1,6 +1,6 @@
 import { Hourglass } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { RadialBarLearningHours } from '@/pages/dashboard/components/radial-bar-learning-hours';
+import { RadialBarLearningHours } from '@/pages/dashboard/home/components/radial-bar-learning-hours';
 
 export default function CardOverviewProgress() {
     return (

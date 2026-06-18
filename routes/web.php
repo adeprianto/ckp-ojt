@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 Route::inertia('/', 'welcome', [
@@ -8,7 +9,25 @@ Route::inertia('/', 'welcome', [
 ])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard/index')->name('dashboard');
+    Route::prefix('/dashboard')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('dashboard/home/index');
+        })->name('dashboard.home');
+
+        Route::get('/reports', function () {
+            return Inertia::render('dashboard/reports/index');
+        })->name('dashboard.reports');
+
+        Route::prefix('/data-master')->group(function () {
+            Route::get('/penyelenggara-pelatihan', function () {
+                return Inertia::render('dashboard/master-data/organizers/index');
+            })->name('dashboard.master.organizer');
+
+            Route::get('/pelatihan', function () {
+                return Inertia::render('dashboard/master-data/trainings/index');
+            })->name('dashboard.master.training');
+        });
+    });
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

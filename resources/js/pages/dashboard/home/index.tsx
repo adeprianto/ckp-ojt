@@ -1,24 +1,19 @@
 import { Head } from '@inertiajs/react';
+import Highcharts from 'highcharts';
 import { Banknote, Hourglass, User } from 'lucide-react';
 import Heading from '@/components/heading';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-    ChartBarExperientalLearningDurations
-} from '@/pages/dashboard/components/chart-bar-experiental-learning-durations';
-import { ChartBarFormalLearningDurations } from '@/pages/dashboard/components/chart-bar-formal-learning-durations';
-import { ChartBarSocialLearningDurations } from '@/pages/dashboard/components/chart-bar-social-learning-durations';
-import {
-    ChartBarLabelTotalLearningDurationsByBod
-} from '@/pages/dashboard/components/chart-bar-total-learning-durations-by-bod';
-import {
-    ChartBarLabelTotalLearningDurationsByDivision
-} from '@/pages/dashboard/components/chart-bar-total-learning-durations-by-division';
-import { ChartLineTotalLearningDurations } from '@/pages/dashboard/components/chart-line-total-learning-durations';
-import OverviewCostByDivision from '@/pages/dashboard/components/overview/overview-cost-by-division';
-import OverviewHCDevelopmentCost from '@/pages/dashboard/components/overview/overview-hc-development-cost-chart';
-import { dashboard } from '@/routes';
+import { ChartBarExperientalLearningDurations } from '@/pages/dashboard/home/components/chart-bar-experiental-learning-durations';
+import { ChartBarFormalLearningDurations } from '@/pages/dashboard/home/components/chart-bar-formal-learning-durations';
+import { ChartBarSocialLearningDurations } from '@/pages/dashboard/home/components/chart-bar-social-learning-durations';
+import { ChartBarLabelTotalLearningDurationsByBod } from '@/pages/dashboard/home/components/chart-bar-total-learning-durations-by-bod';
+import { ChartBarLabelTotalLearningDurationsByDivision } from '@/pages/dashboard/home/components/chart-bar-total-learning-durations-by-division';
+import { ChartLineTotalLearningDurations } from '@/pages/dashboard/home/components/chart-line-total-learning-durations';
+import OverviewCostByDivision from '@/pages/dashboard/home/components/overview/overview-cost-by-division';
+import OverviewHCDevelopmentCost from '@/pages/dashboard/home/components/overview/overview-hc-development-cost-chart';
+import { home as dashboardHome } from '@/routes/dashboard';
 
 export default function Dashboard() {
     return (
@@ -88,7 +83,7 @@ Dashboard.layout = {
     breadcrumbs: [
         {
             title: 'Dashboard',
-            href: dashboard(),
+            href: dashboardHome(),
         },
     ],
 };

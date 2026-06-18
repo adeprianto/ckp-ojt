@@ -25,9 +25,9 @@ import {
     SidebarMenuSubItem,
     useSidebar,
 } from '@/components/ui/sidebar';
+import { useActiveUrl } from '@/hooks/use-active-url';
 import { cn } from '@/lib/utils';
 import type { NavCollapsible, NavGroup, NavLink } from '@/types';
-import { useActiveUrl } from '@/hooks/use-active-url';
 
 export function NavMain({ items = [] }: { items: NavGroup[] }) {
     // const { urlIsActive } = useActiveUrl();
@@ -41,17 +41,17 @@ export function NavMain({ items = [] }: { items: NavGroup[] }) {
                     const key = `${item.title}-${index}`;
 
                     if (!item.items) {
-return <SidebarMenuLink key={key} item={item} />;
-}
+                        return <SidebarMenuLink key={key} item={item} />;
+                    }
 
                     if (state === 'collapsed' && !isMobile) {
-return (
+                        return (
                             <SidebarMenuCollapsedDropdown
                                 key={key}
                                 item={item}
                             />
                         );
-}
+                    }
 
                     return <SidebarMenuCollapsible key={key} item={item} />;
                 })}
