@@ -5,7 +5,11 @@ import { toUrl } from '@/lib/utils';
 
 export function useActiveUrl() {
     const page = usePage();
-    const currentUrlPath = new URL(page.url, window?.location.origin).pathname;
+
+    const currentUrlPath =
+        typeof window !== 'undefined'
+            ? new URL(page.url, window?.location.origin).pathname
+            : undefined;
 
     function urlIsActive(
         urlToCheck: NonNullable<InertiaLinkProps['href']>,

@@ -9,12 +9,12 @@ import SettingsLayout from '@/layouts/settings/layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-Highcharts.setOptions({
-    lang: {
-        thousandsSep: '.',
-        decimalPoint: ',',
-    },
-});
+// Highcharts.setOptions({
+//     lang: {
+//         thousandsSep: '.',
+//         decimalPoint: ',',
+//     },
+// });
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
