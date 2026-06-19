@@ -57,11 +57,11 @@ export const organizerColumns: ColumnDef<Organizer>[] = [
         id: 'is_group_ptpn',
         accessorKey: 'is_group_ptpn',
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="PTPN Group" />
+            <DataTableColumnHeader column={column} title="LPP/Non LPP" />
         ),
         cell: ({ row }) => (
             <LongText className="max-w-56 ps-3">
-                {row.original.is_ptpn_group ? 'Ya' : 'Tidak'}
+                {row.original.is_ptpn_group ? 'LPP' : 'Non LPP'}
             </LongText>
         ),
         meta: {

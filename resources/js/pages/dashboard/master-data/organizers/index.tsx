@@ -3,6 +3,7 @@ import { OrganizersDialogs } from '@/pages/dashboard/master-data/organizers/comp
 import { OrganizersPrimaryButtons } from '@/pages/dashboard/master-data/organizers/components/organizers-primary-buttons';
 import { OrganizerProvider } from '@/pages/dashboard/master-data/organizers/components/organizers-provider';
 import { OrganizersTableWrapper } from '@/pages/dashboard/master-data/organizers/components/organizers-table-wrapper';
+import { home as dashboardHome } from '@/routes/dashboard';
 
 export default function MasterDataOrganizers() {
     return (
@@ -32,6 +33,10 @@ export default function MasterDataOrganizers() {
 
 MasterDataOrganizers.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboardHome(),
+        },
         {
             title: 'Master Data - Penyelenggara',
             href: '#',

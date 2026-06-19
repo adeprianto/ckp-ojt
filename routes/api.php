@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\OrganizerController;
+use App\Http\Controllers\API\TrainingController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,14 @@ Route::prefix('/master-data')->group(function () {
         Route::post('/', [OrganizerController::class, 'store']);
         Route::put('/{id}', [OrganizerController::class, 'update']);
         Route::delete('/{id}', [OrganizerController::class, 'destroy']);
+    });
+
+    Route::prefix('/training')->group(function () {
+        Route::get('/', [TrainingController::class, 'index']);
+        Route::get('/{id}', [TrainingController::class, 'show']);
+        Route::post('/', [TrainingController::class, 'store']);
+        Route::put('/{id}', [TrainingController::class, 'update']);
+        Route::delete('/{id}', [TrainingController::class, 'destroy']);
     });
 });
 

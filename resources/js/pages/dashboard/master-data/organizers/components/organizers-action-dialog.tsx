@@ -226,11 +226,11 @@ export function OrganizersActionDialog({
                                             className="col-span-4 w-full overflow-hidden"
                                             items={[
                                                 {
-                                                    label: 'Iya',
+                                                    label: 'LPP',
                                                     value: '1',
                                                 },
                                                 {
-                                                    label: 'Tidak',
+                                                    label: 'Non LPP',
                                                     value: '0',
                                                 },
                                             ]}

@@ -62,7 +62,7 @@ class OrganizerController extends Controller
             if (is_null($organizer)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Organizer not found',
+                    'message' => 'Organizer with id ' . $id . ' cannot be found',
                 ], Response::HTTP_NOT_FOUND);
             }
 
@@ -86,7 +86,7 @@ class OrganizerController extends Controller
         if (is_null($organizer)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Organizer not found',
+                'message' => 'Organizer with id ' . $id . ' cannot be found',
             ], Response::HTTP_NOT_FOUND);
         }
 
@@ -94,7 +94,7 @@ class OrganizerController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Organizer deleted successfully',
+            'message' => 'Organizer with id ' . $id . ' has been deleted',
         ], Response::HTTP_OK);
     }
 }
