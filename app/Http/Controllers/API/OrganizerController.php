@@ -66,12 +66,9 @@ class OrganizerController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            Validator::make($request->all(), $this->organizerRules())->validate();
-
-            $organizer->update([
-                'name' => $request->name || $organizer->name,
-                'is_ptpn_group' => $request->is_ptpn_group || $organizer->is_ptpn_group,
-            ]);
+            $organizer->name = $request->name ?? $organizer->name;
+            $organizer->is_ptpn_group = $request->is_ptpn_group ?? $organizer->is_ptpn_group;
+            $organizer->save();
 
             return response()->json($organizer, Response::HTTP_OK);
         } catch (ValidationException $exception) {

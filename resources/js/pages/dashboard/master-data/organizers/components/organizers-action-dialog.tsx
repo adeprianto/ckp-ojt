@@ -72,7 +72,7 @@ export function OrganizersActionDialog({
         defaultValues: isEdit
             ? {
                   name: currentRow?.name,
-                  isPtpnGroup: undefined,
+                  isPtpnGroup: currentRow?.is_ptpn_group,
                   isEdit,
               }
             : {
@@ -88,14 +88,21 @@ export function OrganizersActionDialog({
         if (values.isEdit) {
             setIsLoading(true);
             axios
-                .put<Organizer[]>(
+                .put<Organizer>(
                     `/api/master-data/organizer/${currentRow!.id}`,
-                    values,
+                    {
+                        name: values.name,
+                        is_ptpn_group: values.isPtpnGroup,
+                    },
                 )
-                .then((response) => {
+                .then(() => {
                     form.reset();
                     onOpenChange(false);
                     showSuccessSubmitOrganizerData(values, isEdit);
+
+                    return axios.get<Organizer[]>('/api/master-data/organizer');
+                })
+                .then((response) => {
                     setIsLoading(false);
                     setOrganizers(response.data);
                 })
@@ -117,11 +124,18 @@ export function OrganizersActionDialog({
         } else {
             setIsLoading(true);
             axios
-                .post<Organizer[]>('/api/master-data/organizer', values)
-                .then((response) => {
+                .post<Organizer>('/api/master-data/organizer', {
+                    name: values.name,
+                    is_ptpn_group: values.isPtpnGroup,
+                })
+                .then(() => {
                     form.reset();
                     onOpenChange(false);
                     showSuccessSubmitOrganizerData(values, isEdit);
+
+                    return axios.get<Organizer[]>('/api/master-data/organizer');
+                })
+                .then((response) => {
                     setIsLoading(false);
                     setOrganizers(response.data);
                 })
@@ -162,10 +176,10 @@ export function OrganizersActionDialog({
                         {isEdit
                             ? 'Update penyelenggara '
                             : 'Tambah penyelenggara baru '}
-                        Klik tombol `save` saat anda sudah selesai.
+                        Klik tombol simpan saat anda sudah selesai.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="h-105 w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3">
+                <div className="w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3">
                     <Form {...form}>
                         <form
                             id="user-form"
@@ -177,27 +191,7 @@ export function OrganizersActionDialog({
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem className="grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1">
-                                        <FormLabel className="col-span-2 text-end">
-                                            Username
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Masukkan nama penyelenggara"
-                                                className="col-span-4"
-                                                autoComplete="off"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage className="col-span-4 col-start-3" />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem className="grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1">
-                                        <FormLabel className="col-span-2 text-end">
+                                        <FormLabel className="col-span-2">
                                             Nama
                                         </FormLabel>
                                         <FormControl>
@@ -217,14 +211,19 @@ export function OrganizersActionDialog({
                                 name="isPtpnGroup"
                                 render={({ field }) => (
                                     <FormItem className="grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1">
-                                        <FormLabel className="col-span-2 text-end">
+                                        <FormLabel className="col-span-2">
                                             Termasuk Dalam PTPN Grup
                                         </FormLabel>
                                         <SelectDropdown
                                             defaultValue={field.value?.toString()}
-                                            onValueChange={field.onChange}
-                                            placeholder="Pilih jabatan"
-                                            className="col-span-4"
+                                            onValueChange={(value) =>
+                                                form.setValue(
+                                                    'isPtpnGroup',
+                                                    value === '1',
+                                                )
+                                            }
+                                            placeholder="Termasuk dalam PTPN Group"
+                                            className="col-span-4 w-full overflow-hidden"
                                             items={[
                                                 {
                                                     label: 'Iya',
@@ -245,7 +244,7 @@ export function OrganizersActionDialog({
                 </div>
                 <DialogFooter>
                     <Button disabled={isLoading} type="submit" form="user-form">
-                        {isLoading && <Spinner />} Save changes
+                        {isLoading && <Spinner />} Simpan
                     </Button>
                 </DialogFooter>
             </DialogContent>

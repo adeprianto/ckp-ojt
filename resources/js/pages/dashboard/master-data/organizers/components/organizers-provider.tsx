@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import useDialogState from '@/hooks/use-dialog-state';
 import type { Organizer } from '@/types/organizer';
 

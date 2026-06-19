@@ -2,7 +2,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 
 import { DataTableColumnHeader } from '@/components/data-table';
 import { LongText } from '@/components/long-text';
-import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 import type { Organizer } from '@/types/organizer';
 import { DataTableRowActions } from './data-table-row-actions';
@@ -62,7 +61,7 @@ export const organizerColumns: ColumnDef<Organizer>[] = [
         ),
         cell: ({ row }) => (
             <LongText className="max-w-56 ps-3">
-                {row.original.is_ptpn_group ? 'Ya' : 'Bukan'}
+                {row.original.is_ptpn_group ? 'Ya' : 'Tidak'}
             </LongText>
         ),
         meta: {
