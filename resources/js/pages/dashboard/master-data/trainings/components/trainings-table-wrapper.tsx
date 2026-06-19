@@ -2,25 +2,25 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import { Spinner } from '@/components/ui/spinner';
-import type { Organizer } from '@/types/organizer';
-import { useOrganizers } from './organizers-provider';
-import { OrganizersTable } from './organizers-table';
+import type { Training } from '@/types/training';
+import { useTrainings } from './trainings-provider';
+import { TrainingTable } from './trainings-table';
 
-export function OrganizersTableWrapper() {
-    const { organizers, setOrganizers } = useOrganizers();
+export function TrainingsTableWrapper() {
+    const { trainings, setTrainings } = useTrainings();
 
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const fetchOrganizers = async () => {
+        const fetchTrainings = async () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get<Organizer[]>(
-                    '/api/master-data/organizer',
+                const response = await axios.get<Training[]>(
+                    '/api/master-data/training',
                 );
 
-                setOrganizers(response.data);
+                setTrainings(response.data);
                 setIsLoading(false);
             } catch (e) {
                 console.log(e);
@@ -28,8 +28,8 @@ export function OrganizersTableWrapper() {
             }
         };
 
-        fetchOrganizers();
-    }, [setOrganizers]);
+        fetchTrainings();
+    }, [setTrainings]);
 
     return isLoading ? (
         <div className="flex h-32 flex-1 items-center justify-center gap-x-4">
@@ -37,6 +37,6 @@ export function OrganizersTableWrapper() {
             <span>Loading ...</span>
         </div>
     ) : (
-        <OrganizersTable data={organizers} />
+        <TrainingTable data={trainings} />
     );
 }

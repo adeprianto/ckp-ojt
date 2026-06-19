@@ -26,15 +26,15 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import type { Organizer } from '@/types/organizer';
-import { organizersColumns as columns } from './organizers-columns';
+import type { Training } from '@/types/training';
+import { trainingsColumns as columns } from './trainings-columns';
 
 type DataTableProps = {
-    data: Organizer[];
+    data: Training[];
     search?: Record<string, unknown>;
 };
 
-export function OrganizersTable({ data }: DataTableProps) {
+export function TrainingTable({ data }: DataTableProps) {
     // Local UI-only states
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -75,7 +75,7 @@ export function OrganizersTable({ data }: DataTableProps) {
         >
             <DataTableToolbar
                 table={table}
-                searchPlaceholder="Filter penyelenggara..."
+                searchPlaceholder="Filter pelatihan..."
                 searchKey="name"
             />
             <div className="overflow-hidden rounded-md border">

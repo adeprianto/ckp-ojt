@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import type { Organizer } from '@/types/organizer';
 import { DataTableRowActions } from './data-table-row-actions';
 
-export const organizerColumns: ColumnDef<Organizer>[] = [
+export const organizersColumns: ColumnDef<Organizer>[] = [
     // {
     //     id: 'select',
     //     header: ({ table }) => (
