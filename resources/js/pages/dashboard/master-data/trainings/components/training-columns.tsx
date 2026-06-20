@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import type { Training } from '@/types/training';
 import { DataTableRowActions } from './data-table-row-actions';
 
-export const trainingsColumns: ColumnDef<Training>[] = [
+export const trainingColumns: ColumnDef<Training>[] = [
     // {
     //     id: 'select',
     //     header: ({ table }) => (
@@ -61,7 +61,7 @@ export const trainingsColumns: ColumnDef<Training>[] = [
         ),
         cell: ({ row }) => (
             <LongText className="max-w-56 ps-3">
-                {row.original.activity_type}
+                {row.original.activity_type.toCapitalize()}
             </LongText>
         ),
         meta: {
@@ -80,7 +80,7 @@ export const trainingsColumns: ColumnDef<Training>[] = [
         ),
         cell: ({ row }) => (
             <LongText className="max-w-56 ps-3">
-                {row.original.learning_sector}
+                {row.original.learning_sector.toCapitalize()}
             </LongText>
         ),
         meta: {
@@ -99,7 +99,7 @@ export const trainingsColumns: ColumnDef<Training>[] = [
         ),
         cell: ({ row }) => (
             <LongText className="max-w-56 ps-3">
-                {row.original.learning_type}
+                {row.original.learning_type.toCapitalize()}
             </LongText>
         ),
         meta: {

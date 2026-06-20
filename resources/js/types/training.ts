@@ -7,7 +7,7 @@ export type Training = {
     learning_sector: string;
     learning_type: string;
     learning_hours: number;
-    cost: number;
+    cost: bigint;
     organization_id: number;
     is_ptpn_group: boolean;
     organizer: Organizer;

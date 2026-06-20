@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 import useDialogState from '@/hooks/use-dialog-state';
 import type { Training } from '@/types/training';
 
-type TrainingsDialogType = 'create' | 'edit' | 'delete';
+type TrainingDialogType = 'create' | 'edit' | 'delete';
 
-type TrainingsContextType = {
-    open: TrainingsDialogType | null;
-    setOpen: (str: TrainingsDialogType | null) => void;
+type TrainingContextType = {
+    open: TrainingDialogType | null;
+    setOpen: (str: TrainingDialogType | null) => void;
     currentRow: Training | null;
     setCurrentRow: React.Dispatch<React.SetStateAction<Training | null>>;
     trainings: Training[];
     setTrainings: React.Dispatch<Training[]>;
 };
 
-const TraininigContext = React.createContext<TrainingsContextType | null>(null);
+const TraininigContext = React.createContext<TrainingContextType | null>(null);
 
 export function TrainingProvider({ children }: { children: React.ReactNode }) {
-    const [open, setOpen] = useDialogState<TrainingsDialogType>(null);
+    const [open, setOpen] = useDialogState<TrainingDialogType>(null);
     const [currentRow, setCurrentRow] = useState<Training | null>(null);
-    const [organizers, setOrganizers] = useState<Training[]>([]);
+    const [trainings, setTrainings] = useState<Training[]>([]);
 
     return (
         <TraininigContext
@@ -27,8 +27,8 @@ export function TrainingProvider({ children }: { children: React.ReactNode }) {
                 setOpen,
                 currentRow,
                 setCurrentRow,
-                trainings: organizers,
-                setTrainings: setOrganizers,
+                trainings,
+                setTrainings,
             }}
         >
             {children}
@@ -36,14 +36,12 @@ export function TrainingProvider({ children }: { children: React.ReactNode }) {
     );
 }
 
-export const useTrainings = () => {
-    const trainingsContext = React.useContext(TraininigContext);
+export const useTraining = () => {
+    const trainingContext = React.useContext(TraininigContext);
 
-    if (!trainingsContext) {
-        throw new Error(
-            'trainingsContext must be used within trainingsContext',
-        );
+    if (!trainingContext) {
+        throw new Error('trainingContext must be used within trainingContext');
     }
 
-    return trainingsContext;
+    return trainingContext;
 };

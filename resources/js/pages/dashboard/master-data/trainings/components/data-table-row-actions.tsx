@@ -12,14 +12,14 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import type { Training } from '@/types/training';
-import { useTrainings } from './trainings-provider';
+import { useTraining } from './training-provider';
 
 type DataTableRowActionsProps = {
     row: Row<Training>;
 };
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-    const { setOpen, setCurrentRow } = useTrainings();
+    const { setOpen, setCurrentRow } = useTraining();
 
     return (
         <>

@@ -27,7 +27,7 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import type { Training } from '@/types/training';
-import { trainingsColumns as columns } from './trainings-columns';
+import { trainingColumns as columns } from './training-columns';
 
 type DataTableProps = {
     data: Training[];

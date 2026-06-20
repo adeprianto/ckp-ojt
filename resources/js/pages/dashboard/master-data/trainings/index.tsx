@@ -1,6 +1,8 @@
 import { Head } from '@inertiajs/react';
-import { TrainingProvider } from '@/pages/dashboard/master-data/trainings/components/trainings-provider';
-import { TrainingsTableWrapper } from '@/pages/dashboard/master-data/trainings/components/trainings-table-wrapper';
+import { TrainingDialogs } from '@/pages/dashboard/master-data/trainings/components/training-dialogs';
+import { TrainingPrimaryButtons } from '@/pages/dashboard/master-data/trainings/components/training-primary-buttons';
+import { TrainingProvider } from '@/pages/dashboard/master-data/trainings/components/training-provider';
+import { TrainingTableWrapper } from '@/pages/dashboard/master-data/trainings/components/training-table-wrapper';
 import { home as dashboardHome } from '@/routes/dashboard';
 
 export default function MasterDataTrainings() {
@@ -18,9 +20,12 @@ export default function MasterDataTrainings() {
                                 Manajemen data master pelatihan
                             </p>
                         </div>
+                        <TrainingPrimaryButtons />
                     </div>
-                    <TrainingsTableWrapper />
+                    <TrainingTableWrapper />
                 </div>
+
+                <TrainingDialogs />
             </TrainingProvider>
         </>
     );

@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 
 import { Spinner } from '@/components/ui/spinner';
 import type { Training } from '@/types/training';
-import { useTrainings } from './trainings-provider';
-import { TrainingTable } from './trainings-table';
+import { useTraining } from './training-provider';
+import { TrainingTable } from './training-table';
 
-export function TrainingsTableWrapper() {
-    const { trainings, setTrainings } = useTrainings();
+export function TrainingTableWrapper() {
+    const { trainings, setTrainings } = useTraining();
 
     const [isLoading, setIsLoading] = useState(true);
 

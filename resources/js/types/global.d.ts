@@ -10,3 +10,9 @@ declare module '@inertiajs/core' {
         };
     }
 }
+
+declare global {
+    interface String {
+        toCapitalize(): string;
+    }
+}
