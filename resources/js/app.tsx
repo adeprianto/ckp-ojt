@@ -1,4 +1,5 @@
 import { createInertiaApp } from '@inertiajs/react';
+import { registerAllModules } from 'handsontable/registry';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
@@ -7,6 +8,8 @@ import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
 import './lib/prototype';
+
+registerAllModules();
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

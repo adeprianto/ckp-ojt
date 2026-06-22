@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Training extends Model
 {
@@ -21,5 +22,10 @@ class Training extends Model
     public function organizer(): BelongsTo
     {
         return $this->belongsTo(Organizer::class, 'organization_id');
+    }
+
+    public function realization(): HasMany
+    {
+        return $this->hasMany(TrainingRealization::class, 'training_id');
     }
 }

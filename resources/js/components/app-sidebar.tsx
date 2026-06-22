@@ -17,11 +17,12 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { home as dashboardHome, reports } from '@/routes/dashboard';
+import { home as dashboardHome } from '@/routes/dashboard';
 import {
     organizer as dashboardMasterDataOrginizer,
     training as dashboardMasterDataTraining,
 } from '@/routes/dashboard/master';
+import { trainings as reportTrainings } from '@/routes/dashboard/reports';
 import type { NavGroup, NavItem } from '@/types';
 
 const dashboardNavItems: NavItem[] = [
@@ -36,7 +37,7 @@ const reportNavItems: NavItem[] = [
     {
         title: 'Laporan Pelatihan',
         icon: FileChartColumnIncreasing,
-        href: reports(),
+        href: reportTrainings(),
     },
 ];
 

@@ -8,6 +8,7 @@ declare module '@tanstack/react-table' {
         thClassName?: string;
         selectOptions?: { label: string; value: string }[];
         defaultValue?: string | number; // Add this!
+        rowSpan?: number;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

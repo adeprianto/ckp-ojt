@@ -14,9 +14,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return Inertia::render('dashboard/home/index');
         })->name('dashboard.home');
 
-        Route::get('/reports', function () {
-            return Inertia::render('dashboard/reports/index');
-        })->name('dashboard.reports');
+        Route::prefix('/reports')->group(function () {
+            Route::get('/', function () {
+                return Inertia::render('dashboard/reports/trainings/index');
+            })->name('dashboard.reports.trainings');
+
+            Route::get('/{id}', function ($id) {
+                return Inertia::render('dashboard/reports/training-detail/index', [
+                    'id' => $id,
+                ]);
+            })->name('dashboard.reports.training-detail');
+        });
 
         Route::prefix('/data-master')->group(function () {
             Route::get('/penyelenggara-pelatihan', function () {
@@ -30,4 +38,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

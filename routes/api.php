@@ -29,6 +29,12 @@ Route::prefix('/master-data')->group(function () {
     });
 });
 
+Route::prefix('/training')->group(function () {
+    Route::get('/overview', [TrainingController::class, 'indexTrainingOverview']);
+    Route::get('/overview/{id}', [TrainingController::class, 'showTrainingOverview']);
+    Route::get('/realization/{id}', [TrainingController::class, 'showTrainingRealizationPerRegionPerMonth']);
+});
+
 Route::prefix('/auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
