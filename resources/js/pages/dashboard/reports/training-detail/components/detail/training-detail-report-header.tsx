@@ -1,4 +1,5 @@
-import { useTrainingDetailReport } from '@/pages/dashboard/reports/training-detail/components/training-detail-report-provider';
+import { TrainingDetailReportPrimaryButtons } from '@/pages/dashboard/reports/training-detail/components/detail/training-detail-report-primary-buttons';
+import { useTrainingDetailReport } from '@/pages/dashboard/reports/training-detail/components/detail/training-detail-report-provider';
 
 export function TrainingDetailReportHeader() {
     const { isFetchingReportTrainingDetail, training } =
@@ -17,6 +18,7 @@ export function TrainingDetailReportHeader() {
                         <p>{training?.name}</p>
                     )}
                 </div>
+                <TrainingDetailReportPrimaryButtons />
             </div>
         </div>
     );

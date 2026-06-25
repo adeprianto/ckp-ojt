@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\EmployeeController;
 use App\Http\Controllers\API\OrganizerController;
+use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\TrainingController;
+use App\Http\Controllers\API\UnitController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +29,15 @@ Route::prefix('/master-data')->group(function () {
         Route::post('/', [TrainingController::class, 'store']);
         Route::put('/{id}', [TrainingController::class, 'update']);
         Route::delete('/{id}', [TrainingController::class, 'destroy']);
+    });
+
+    Route::prefix('/region')->group(function () {
+        Route::get('/', [RegionController::class, 'index']);
+        Route::get('/{id}/unit', [UnitController::class, 'showByRegionId']);
+    });
+
+    Route::prefix('/unit')->group(function () {
+        Route::get('/{id}/employee', [EmployeeController::class, 'showByUnitId']);
     });
 });
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
-import { useTrainingDetailReport } from '@/pages/dashboard/reports/training-detail/components/training-detail-report-provider';
+import { useTrainingDetailReport } from '@/pages/dashboard/reports/training-detail/components/detail/training-detail-report-provider';
 import type { RecapTrainingRegionMonth } from '@/types/recap-training-region-month';
 import type { Training } from '@/types/training';
 

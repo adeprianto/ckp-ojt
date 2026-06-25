@@ -13,7 +13,7 @@ type TrainingDetailReportContextType = {
     setRecapTrainingRegion: React.Dispatch<RecapTrainingRegionMonth[] | null>;
 };
 
-const TraininigDetailReportContext =
+const TrainingDetailReportContext =
     React.createContext<TrainingDetailReportContextType | null>(null);
 
 export function TrainingDetailReportProvider({
@@ -32,7 +32,7 @@ export function TrainingDetailReportProvider({
     >(null);
 
     return (
-        <TraininigDetailReportContext
+        <TrainingDetailReportContext
             value={{
                 isFetchingReportTrainingDetail,
                 setIsFetchingReportTrainingDetail,
@@ -45,13 +45,13 @@ export function TrainingDetailReportProvider({
             }}
         >
             {children}
-        </TraininigDetailReportContext>
+        </TrainingDetailReportContext>
     );
 }
 
 export const useTrainingDetailReport = () => {
     const trainingDetailReportContext = React.useContext(
-        TraininigDetailReportContext,
+        TrainingDetailReportContext,
     );
 
     if (!trainingDetailReportContext) {

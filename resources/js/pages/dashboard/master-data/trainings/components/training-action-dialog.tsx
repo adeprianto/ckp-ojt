@@ -272,7 +272,9 @@ export function TrainingActionDialog({
                                             Kegiatan Pelatihan
                                         </FormLabel>
                                         <SelectDropdown
-                                            defaultValue={field.value?.toString()}
+                                            defaultValue={
+                                                field.value?.toString() ?? ''
+                                            }
                                             onValueChange={field.onChange}
                                             placeholder="Pilih Kegiatan Pelatihan"
                                             className="col-span-4 w-full overflow-hidden"
@@ -312,7 +314,9 @@ export function TrainingActionDialog({
                                             Bidang
                                         </FormLabel>
                                         <SelectDropdown
-                                            defaultValue={field.value?.toString()}
+                                            defaultValue={
+                                                field.value?.toString() ?? ''
+                                            }
                                             onValueChange={field.onChange}
                                             placeholder="Bidang Pelatihan"
                                             className="col-span-4 w-full overflow-hidden"
@@ -356,7 +360,9 @@ export function TrainingActionDialog({
                                             Jenis Pelatihan
                                         </FormLabel>
                                         <SelectDropdown
-                                            defaultValue={field.value?.toString()}
+                                            defaultValue={
+                                                field.value?.toString() ?? ''
+                                            }
                                             onValueChange={field.onChange}
                                             placeholder="Pilih Jenis Pelatihan"
                                             className="col-span-4 w-full overflow-hidden"
@@ -385,7 +391,9 @@ export function TrainingActionDialog({
                                         </FormLabel>
                                         <SelectDropdown
                                             isControlled
-                                            defaultValue={field.value?.toString()}
+                                            defaultValue={
+                                                field.value?.toString() ?? ''
+                                            }
                                             onValueChange={(value) => {
                                                 field.onChange(parseInt(value));
 

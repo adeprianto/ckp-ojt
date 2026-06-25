@@ -2,7 +2,7 @@ import Handsontable from 'handsontable';
 import { useEffect, useRef } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
-import { useTrainingDetailReport } from '@/pages/dashboard/reports/training-detail/components/training-detail-report-provider';
+import { useTrainingDetailReport } from '@/pages/dashboard/reports/training-detail/components/detail/training-detail-report-provider';
 
 const mergeCellsSettings = [
     {

@@ -1,0 +1,27 @@
+export type Employee = {
+    id: number;
+    nik: string;
+    name: string;
+    start_working_date?: string;
+    is_active: boolean;
+    company_code?: string;
+    personnel_area_code?: string;
+    employee_group_code?: string;
+    employee_group?: string;
+    job_grade?: string;
+    personnel_area?: string;
+    personnel_subarea?: string;
+    payroll_area?: string;
+    organizational_unit_code?: string;
+    unit?: string;
+    position_code?: string;
+    position?: string;
+    birth_date?: string;
+    person_grade?: string;
+    gender_code?: string;
+    gender?: string;
+    educational?: string;
+    position_id?: number;
+    region_id?: number;
+    unit_id?: number;
+};
