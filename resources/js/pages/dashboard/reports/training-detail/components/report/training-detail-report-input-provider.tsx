@@ -1,4 +1,3 @@
-import type { Table } from '@tanstack/react-table';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import React from 'react';
@@ -25,6 +24,10 @@ type TrainingDetailReportInputContextType = {
     setEmployees: React.Dispatch<Employee[] | null>;
     selectedEmployees: Employee[] | null;
     setSelectedEmployees: React.Dispatch<Employee[] | null>;
+    learningHours: number | undefined;
+    setLearningHours: React.Dispatch<number | undefined>;
+    cost: bigint | undefined;
+    setCost: React.Dispatch<bigint | undefined>;
     startLearningDate: Date;
     setStartLearningDate: React.Dispatch<Date>;
     endLearningDate: Date;
@@ -50,6 +53,8 @@ export function TrainingDetailReportInputProvider({
     const [selectedEmployees, setSelectedEmployees] = useState<
         Employee[] | null
     >(null);
+    const [learningHours, setLearningHours] = useState<number>();
+    const [cost, setCost] = useState<bigint>();
     const [startLearningDate, setStartLearningDate] = useState<Date>(
         new Date(),
     );
@@ -76,6 +81,10 @@ export function TrainingDetailReportInputProvider({
                 setEmployees,
                 selectedEmployees,
                 setSelectedEmployees,
+                learningHours,
+                setLearningHours,
+                cost,
+                setCost,
                 startLearningDate,
                 setStartLearningDate,
                 endLearningDate,

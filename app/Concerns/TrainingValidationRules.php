@@ -33,7 +33,7 @@ trait TrainingValidationRules
         return [
             'required',
             'string',
-            Rule::in(['keuangan', 'tanaman', 'pengolahan', 'teknik', 'umum/lainnya']),
+            Rule::in(['keuangan', 'tanaman', 'pengolahan', 'teknik', 'umum', 'personalia', 'lainnya']),
         ];
     }
 
@@ -59,6 +59,49 @@ trait TrainingValidationRules
             'required',
             'integer',
             'exists:organizers,id',
+        ];
+    }
+
+    protected function trainingRealizationRules(): array
+    {
+        return [
+            'name' => $this->nameRules(),
+            'activity_type' => $this->activityTypeRules(),
+            'learning_sector' => $this->learningSectorRules(),
+            'learning_hours' => $this->learningHoursRules(),
+            'cost' => $this->costRules(),
+            'organization_id' => $this->organizationIdRules(),
+            'start_learning_date' => $this->learningDateRules(),
+            'end_learning_date' => $this->learningDateRules(),
+            'total_participants' => $this->totalParticipantRules(),
+            'total_learning_hours' => $this->learningHoursRules(),
+            'total_cost' => $this->costRules(),
+            'participants' => $this->participantsRules(),
+        ];
+    }
+
+    protected function learningDateRules(): array
+    {
+        return [
+            'required',
+            'string',
+        ];
+    }
+
+    protected function totalParticipantRules(): array
+    {
+        return [
+            'required',
+            'numeric',
+        ];
+    }
+
+    protected function participantsRules(): array
+    {
+        return [
+            'required',
+            'array',
+            'min:1',
         ];
     }
 

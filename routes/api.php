@@ -45,6 +45,7 @@ Route::prefix('/training')->group(function () {
     Route::get('/overview', [TrainingController::class, 'indexTrainingOverview']);
     Route::get('/overview/{id}', [TrainingController::class, 'showTrainingOverview']);
     Route::get('/realization/{id}', [TrainingController::class, 'showTrainingRealizationPerRegionPerMonth']);
+    Route::post('/realization/{id}', [TrainingController::class, 'storeTrainingRealization']);
 });
 
 Route::prefix('/auth')->group(function () {

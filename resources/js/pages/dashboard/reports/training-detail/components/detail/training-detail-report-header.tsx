@@ -1,7 +1,16 @@
-import { TrainingDetailReportPrimaryButtons } from '@/pages/dashboard/reports/training-detail/components/detail/training-detail-report-primary-buttons';
+import { FilePlus, MoveLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useTrainingDetailReport } from '@/pages/dashboard/reports/training-detail/components/detail/training-detail-report-provider';
 
-export function TrainingDetailReportHeader() {
+type TrainingDetailReportHeaderProp = {
+    isAddReport: boolean;
+    setIsAddReport: React.Dispatch<boolean>;
+};
+
+export function TrainingDetailReportHeader({
+    isAddReport,
+    setIsAddReport,
+}: TrainingDetailReportHeaderProp) {
     const { isFetchingReportTrainingDetail, training } =
         useTrainingDetailReport();
 
@@ -18,7 +27,26 @@ export function TrainingDetailReportHeader() {
                         <p>{training?.name}</p>
                     )}
                 </div>
-                <TrainingDetailReportPrimaryButtons />
+                {isAddReport ? (
+                    <Button
+                        variant="ghost"
+                        onClick={() => {
+                            setIsAddReport(false);
+                        }}
+                        className="h-8 px-2 lg:px-3"
+                    >
+                        <MoveLeft className="ms-2 h-4 w-4" />
+                        Kembali
+                    </Button>
+                ) : (
+                    <Button
+                        className="space-x-1"
+                        onClick={() => setIsAddReport(true)}
+                    >
+                        <FilePlus size={18} />
+                        <span>Tambah Laporan Realisasi Pelatihan</span>{' '}
+                    </Button>
+                )}
             </div>
         </div>
     );

@@ -9,6 +9,7 @@ export type Employee = {
     employee_group_code?: string;
     employee_group?: string;
     job_grade?: string;
+    bod_level?: string;
     personnel_area?: string;
     personnel_subarea?: string;
     payroll_area?: string;

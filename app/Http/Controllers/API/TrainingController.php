@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Concerns\TrainingValidationRules;
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\Region;
 use App\Models\Training;
 use App\Models\TrainingRealization;
@@ -11,6 +12,7 @@ use App\Models\TrainingRealizationDetail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -274,6 +276,66 @@ class TrainingController extends Controller
         }
 
         return $regions;
+    }
+
+    public function storeTrainingRealization(Request $request, int $id)
+    {
+        try {
+            Validator::make($request->all(), $this->trainingRealizationRules())->validate();
+
+            DB::beginTransaction();
+
+            $trainingRealization = TrainingRealization::create([
+                'training_id' => $id,
+                'training_name' => $request->name,
+                'training_start_date' => $request->start_learning_date,
+                'training_end_date' => $request->end_learning_date,
+                'total_participants' => $request->total_participants,
+                'total_learning_hours' => $request->total_learning_hours,
+                'cost' => $request->total_cost,
+            ]);
+
+            $employees = Employee::whereIn('id', $request->participants)->get();
+
+            $data_realization_detail = [];
+
+            $learning_hour = $request->total_learning_hours / $request->total_participants;
+            $cost = $request->total_cost / $request->total_participants;
+
+            foreach ($employees as $employee) {
+                $data_realization_detail[] = [
+                    'training_id' => $id,
+                    'training_realization_id' => $trainingRealization->id,
+                    'training_start_date' => $request->start_learning_date,
+                    'training_end_date' => $request->end_learning_date,
+                    'learning_hours' => $learning_hour,
+                    'cost' => $cost,
+                    'employee_name' => $employee->name,
+                    'employee_id' => $employee->id,
+                    'employee_position' => $employee->position,
+                    'position_id' => $employee->position_id,
+                    'employee_bod_level' => $employee->bod_level,
+                    'employee_unit' => $employee->personnel_subarea,
+                    'unit_id' => $employee->unit_id,
+                    'region_id' => $employee->region_id,
+                ];
+            }
+
+            DB::rollBack();
+
+            return response()->json([
+                'training_realization' => $trainingRealization,
+                'training_realization_detail' => $data_realization_detail,
+            ], Response::HTTP_CREATED);
+
+        } catch (ValidationException $exception) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
 }
