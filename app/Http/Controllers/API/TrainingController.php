@@ -321,7 +321,9 @@ class TrainingController extends Controller
                 ];
             }
 
-            DB::rollBack();
+            TrainingRealizationDetail::insert($data_realization_detail);
+
+            DB::commit();
 
             return response()->json([
                 'training_realization' => $trainingRealization,
@@ -336,6 +338,193 @@ class TrainingController extends Controller
                 'message' => $exception->getMessage(),
             ], Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    public function showRealizationByRegion()
+    {
+        $realizationByRegion = DB::table('training_realization_details as a')
+            ->rightJoin('regions as b', function ($join) {
+                $join->on('a.region_id', '=', 'b.id');
+            })
+            ->select(
+                'b.region_name',
+                DB::raw('IFNULL(SUM(a.learning_hours), 0) AS total_learning_hours'),
+                DB::raw('IFNULL(SUM(a.cost), 0) AS total_cost'),
+                DB::raw('COUNT(a.id) AS total_participants')
+            )
+            ->groupBy('b.id', 'b.region_name')
+            ->get();
+
+        return response()->json($realizationByRegion, Response::HTTP_OK);
+    }
+
+    public function showRealizationByRegionByMonth()
+    {
+        $realizationByRegion = [
+            'january' => $this->mShowRealizationByRegionByMonth('2026-01-01', '2026-01-31'),
+            'february' => $this->mShowRealizationByRegionByMonth('2026-02-01', '2026-02-28'),
+            'march' => $this->mShowRealizationByRegionByMonth('2026-03-01', '2026-03-31'),
+            'april' => $this->mShowRealizationByRegionByMonth('2026-04-01', '2026-04-30'),
+            'may' => $this->mShowRealizationByRegionByMonth('2026-05-01', '2026-05-31'),
+            'june' => $this->mShowRealizationByRegionByMonth('2026-06-01', '2026-06-30'),
+            'july' => $this->mShowRealizationByRegionByMonth('2026-07-01', '2026-07-31'),
+            'august' => $this->mShowRealizationByRegionByMonth('2026-08-01', '2026-08-31'),
+            'september' => $this->mShowRealizationByRegionByMonth('2026-09-01', '2026-09-30'),
+            'october' => $this->mShowRealizationByRegionByMonth('2026-10-01', '2026-10-31'),
+            'november' => $this->mShowRealizationByRegionByMonth('2026-11-01', '2026-11-30'),
+            'december' => $this->mShowRealizationByRegionByMonth('2026-12-01', '2026-12-31'),
+        ];
+
+        return response()->json($realizationByRegion, Response::HTTP_OK);
+    }
+
+    private function mShowRealizationByRegionByMonth(string $start_date, string $end_date)
+    {
+        $result = DB::table('training_realization_details as a')
+            ->rightJoin('regions as b', function ($join) use ($start_date, $end_date) {
+                $join->on('a.region_id', '=', 'b.id')
+                    ->whereDate('a.training_start_date', '>=', $start_date)
+                    ->whereDate('a.training_start_date', '<=', $end_date);
+            })
+            ->select(
+                'b.region_name',
+                DB::raw('IFNULL(SUM(a.learning_hours), 0) AS total_learning_hours'),
+                DB::raw('IFNULL(SUM(a.cost), 0) AS total_cost'),
+                DB::raw('COUNT(a.id) AS total_participants')
+            )
+            ->groupBy('b.id', 'b.region_name')
+            ->get();
+
+        return $result;
+    }
+
+    public function showRealizationByLppNonLpp()
+    {
+        $result = DB::table('trainings as a')
+            ->leftJoin('training_realizations as b', function ($join) {
+                $join->on('a.id', '=', 'b.training_id');
+            })
+            ->select('a.is_ptpn_group', DB::raw('IFNULL(SUM(b.cost), 0) AS total_cost'))
+            ->groupBy('a.is_ptpn_group')
+            ->get();
+
+        return response()->json($result, Response::HTTP_OK);
+    }
+
+    public function showRealizationByLppNonLppByMonth()
+    {
+        $result = [
+            'january' => $this->mShowRealizationByLppNonLppByMonth('2026-01-01', '2026-01-31'),
+            'february' => $this->mShowRealizationByLppNonLppByMonth('2026-02-01', '2026-02-28'),
+            'march' => $this->mShowRealizationByLppNonLppByMonth('2026-03-01', '2026-03-31'),
+            'april' => $this->mShowRealizationByLppNonLppByMonth('2026-04-01', '2026-04-30'),
+            'may' => $this->mShowRealizationByLppNonLppByMonth('2026-05-01', '2026-05-31'),
+            'june' => $this->mShowRealizationByLppNonLppByMonth('2026-06-01', '2026-06-30'),
+            'july' => $this->mShowRealizationByLppNonLppByMonth('2026-07-01', '2026-07-31'),
+            'august' => $this->mShowRealizationByLppNonLppByMonth('2026-08-01', '2026-08-31'),
+            'september' => $this->mShowRealizationByLppNonLppByMonth('2026-09-01', '2026-09-30'),
+            'october' => $this->mShowRealizationByLppNonLppByMonth('2026-10-01', '2026-10-31'),
+            'november' => $this->mShowRealizationByLppNonLppByMonth('2026-11-01', '2026-11-30'),
+            'december' => $this->mShowRealizationByLppNonLppByMonth('2026-12-01', '2026-12-31'),
+        ];
+
+        return response()->json($result, Response::HTTP_OK);
+    }
+
+    private function mShowRealizationByLppNonLppByMonth(string $start_date, string $end_date)
+    {
+        $result = DB::table('trainings as a')
+            ->leftJoin('training_realizations as b', function ($join) use ($start_date, $end_date) {
+                $join->on('a.id', '=', 'b.training_id')
+                    ->whereDate('b.training_start_date', '>=', $start_date)
+                    ->whereDate('b.training_start_date', '<=', $end_date);
+            })
+            ->select('a.is_ptpn_group', DB::raw('IFNULL(SUM(b.cost), 0) AS total_cost'))
+            ->groupBy('a.is_ptpn_group')
+            ->get();
+
+        return $result;
+    }
+
+    public function showRealizationByOrganizer()
+    {
+        $result = DB::table('organizers as a')
+            ->leftJoin('trainings as b', function ($join) {
+                $join->on('a.id', '=', 'b.organization_id');
+            })
+            ->leftJoin('training_realizations as c', function ($join) {
+                $join->on('b.id', '=', 'c.training_id');
+            })
+            ->select('a.name', DB::raw('IFNULL( SUM( c.cost ), 0 ) AS total_cost '))
+            ->groupBy('a.id')
+            ->get();
+
+        return response()->json($result, Response::HTTP_OK);
+    }
+
+    public function showRealizationByTraining()
+    {
+        $result = DB::table('trainings as a')
+            ->leftJoin('training_realizations as b', function ($join) {
+                $join->on('a.id', '=', 'b.training_id');
+            })
+            ->select('a.name', DB::raw('IFNULL( SUM( b.cost ), 0 ) AS total_cost '))
+            ->groupBy('a.id')
+            ->get();
+
+        return response()->json($result, Response::HTTP_OK);
+    }
+
+    public function showRealizationByLearningSector()
+    {
+        $result = DB::table('trainings as a')
+            ->leftJoin('training_realizations as b', function ($join) {
+                $join->on('a.id', '=', 'b.training_id');
+            })
+            ->select('a.learning_sector', DB::raw('IFNULL( SUM( b.cost ), 0 ) AS total_cost '))
+            ->groupBy('a.learning_sector')
+            ->get();
+
+        return response()->json($result, Response::HTTP_OK);
+    }
+
+    public function showRealizationByLevelBod()
+    {
+        $result = DB::table('employees as a')
+            ->leftJoin('training_realization_details as b', function ($join) {
+                $join->on('a.id', '=', 'b.employee_id');
+            })
+            ->select('a.bod_level', DB::raw('IFNULL( SUM( b.cost ), 0 ) AS total_cost '))
+            ->groupBy('a.bod_level')
+            ->get();
+
+        return response()->json($result, Response::HTTP_OK);
+    }
+
+    public function showParticipantsByRegion()
+    {
+        $result = DB::table('regions as a')
+            ->leftJoin('training_realization_details as b', function ($join) {
+                $join->on('a.id', '=', 'b.region_id');
+            })
+            ->select('a.region_name', DB::raw('IFNULL( count( b.id ), 0 ) AS total_participants '))
+            ->groupBy('a.id')
+            ->get();
+
+        return response()->json($result, Response::HTTP_OK);
+    }
+
+    public function showTotalLearningHoursByRegion()
+    {
+        $result = DB::table('regions as a')
+            ->leftJoin('training_realization_details as b', function ($join) {
+                $join->on('a.id', '=', 'b.region_id');
+            })
+            ->select('a.region_name', DB::raw('IFNULL( SUM( b.learning_hours ), 0 ) AS total_learning_hours '))
+            ->groupBy('a.id')
+            ->get();
+
+        return response()->json($result, Response::HTTP_OK);
     }
 
 }
