@@ -56,7 +56,7 @@ export default function OverviewHCDevelopmentCostLppNonLppPerMonth() {
                     },
                 },
                 title: {
-                    text: 'Biaya LPP vs Non LPP (Rp. 000)',
+                    text: 'Overview Biaya LPP vs Non LPP (Rp. 000)',
                 },
                 xAxis: [
                     {
