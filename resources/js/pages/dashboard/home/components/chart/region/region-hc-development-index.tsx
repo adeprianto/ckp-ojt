@@ -74,7 +74,9 @@ export default function RegionHCDevelopmentIndex({
             <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-12 flex min-h-[150px] items-center justify-center overflow-hidden rounded-sm border-[1.5px]">
                     <div className="w-[400px]">
-                        <RegionHcDevelopmentCostLppNonLpp />
+                        <RegionHcDevelopmentCostLppNonLpp
+                            selectedRegion={selectedRegion}
+                        />
                     </div>
                     <div className="grow">
                         <span className="block text-lg font-bold">

@@ -92,7 +92,7 @@ export default function OverviewHCDevelopmentCostLppNonLpp() {
                 series: [
                     {
                         type: 'pie',
-                        name: 'Market Share',
+                        name: 'Rasio Biaya',
                         data: mData,
                     },
                 ],
