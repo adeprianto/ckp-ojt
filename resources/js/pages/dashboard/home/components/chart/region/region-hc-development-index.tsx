@@ -106,7 +106,9 @@ export default function RegionHCDevelopmentIndex({
                 Biaya Pengembangan SDM berdasarkan Pelatihan
             </span>
             <div>
-                <RegionHCDevelopmentCostLearningSector />
+                <RegionHCDevelopmentCostLearningSector
+                    selectedRegion={selectedRegion}
+                />
             </div>
             <div>
                 <RegionHCDevelopmentCostTraining />
