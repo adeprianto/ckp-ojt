@@ -2,30 +2,30 @@ import { Chart } from '@highcharts/react';
 import axios from 'axios';
 import type * as Highcharts from 'highcharts';
 import React, { useEffect, useMemo, useState } from 'react';
-import { REALIZATION_PER_REGIONAL, RKAP_PER_REGIONAL } from '@/lib/rkap';
 
-interface ChartData {
+type RealizationLppNonLpp = {
+    is_ptpn_group: boolean;
+    total_cost: string;
+};
+
+type ChartData = {
     name: string;
     y: number; // The raw value (Highcharts will calculate the %)
-}
-
-const data: ChartData[] = [
-    { name: 'LPP', y: 65.1 },
-    { name: 'Non. LPP', y: 100 - 65.1 },
-];
+};
 
 export default function OverviewHCDevelopmentCostLppNonLpp() {
     const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState<RealizationLppNonLpp[]>();
 
     useEffect(() => {
         const fetchOverviewData = async () => {
             setIsLoading(true);
 
             try {
-                // const response = await axios.get<OverviewRegionLearningCost[]>(
-                //     '/api/training/realization/region',
-                // );
-                // setOverviewRegionLearningCost(response.data);
+                const response = await axios.get<RealizationLppNonLpp[]>(
+                    '/api/training/realization/ptpn-group',
+                );
+                setData(response.data);
                 setIsLoading(false);
             } catch (e) {
                 console.error(e);
@@ -33,44 +33,74 @@ export default function OverviewHCDevelopmentCostLppNonLpp() {
             }
         };
 
-        // fetchOverviewData();
+        fetchOverviewData();
     }, []);
 
     const chartOptions: Highcharts.Options = useMemo(() => {
-        return {
-            chart: {
-                type: 'pie',
-            },
-            title: {
-                text: undefined,
-            },
-            tooltip: {
-                // Format the tooltip to show the percentage with 1 decimal place
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
-            },
-            plotOptions: {
-                pie: {
-                    // THIS IS THE MAGIC PROPERTY THAT MAKES IT A DONUT
-                    innerSize: '75%',
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        // Display the name and the auto-calculated percentage
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        distance: 0, // Distance of labels from the chart
+        if (data && data.length > 0) {
+            const lppCost = parseInt(
+                data.find((i) => i.is_ptpn_group)?.total_cost ?? '0',
+            );
+
+            const nonLppCost = parseInt(
+                data.find((i) => !i.is_ptpn_group)?.total_cost ?? '0',
+            );
+
+            const mData: ChartData[] = [
+                {
+                    name: 'LPP',
+                    y:
+                        nonLppCost > 0
+                            ? (lppCost / (lppCost + nonLppCost)) * 100
+                            : 100,
+                },
+                {
+                    name: 'Non LPP',
+                    y:
+                        nonLppCost > 0
+                            ? (nonLppCost / (lppCost + nonLppCost)) * 100
+                            : 0,
+                },
+            ];
+
+            return {
+                chart: {
+                    type: 'pie',
+                },
+                title: {
+                    text: undefined,
+                },
+                tooltip: {
+                    // Format the tooltip to show the percentage with 1 decimal place
+                    pointFormat:
+                        '{series.name}: <b>{point.percentage:.1f}%</b>',
+                },
+                plotOptions: {
+                    pie: {
+                        // THIS IS THE MAGIC PROPERTY THAT MAKES IT A DONUT
+                        innerSize: '75%',
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            // Display the name and the auto-calculated percentage
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            distance: 0, // Distance of labels from the chart
+                        },
                     },
                 },
-            },
-            series: [
-                {
-                    type: 'pie',
-                    name: 'Market Share',
-                    data: data,
-                },
-            ],
-        };
-    }, []);
+                series: [
+                    {
+                        type: 'pie',
+                        name: 'Market Share',
+                        data: mData,
+                    },
+                ],
+            };
+        }
+
+        return {};
+    }, [data]);
 
     // 3. Render using the new JSX-native <Chart /> component
     return isLoading ? (
