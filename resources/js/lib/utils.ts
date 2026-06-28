@@ -56,3 +56,22 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
 
     return rangeWithDots;
 }
+
+export function mapRegionIdToRegion(id: number) {
+    switch (id) {
+        case 1:
+            return 'ho';
+        case 2:
+            return 'reg1';
+        case 3:
+            return 'reg2';
+        case 4:
+            return 'reg3';
+        case 5:
+            return 'reg5';
+        case 6:
+            return 'reg7';
+        default:
+            return 'reg8';
+    }
+}

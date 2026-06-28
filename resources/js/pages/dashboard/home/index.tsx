@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import { useState } from 'react';
 import Heading from '@/components/heading';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import OverviewHCDevelopmentIndex from '@/pages/dashboard/home/components/chart/overview/overview-hc-development-index';
@@ -6,6 +7,8 @@ import RegionHCDevelopmentIndex from '@/pages/dashboard/home/components/chart/re
 import { home as dashboardHome } from '@/routes/dashboard';
 
 export default function Dashboard() {
+    const [selectedRegion, setSelectedRegion] = useState(1);
+
     return (
         <>
             <Head title="Dashboard" />
@@ -22,23 +25,25 @@ export default function Dashboard() {
                 <Tabs
                     defaultValue="overview"
                     className="w-[400px]"
-                    value="ho"
-                    onValueChange={(value) => console.log(value)}
+                    value={selectedRegion.toString()}
+                    onValueChange={(value) =>
+                        setSelectedRegion(parseInt(value))
+                    }
                 >
                     <TabsList>
-                        <TabsTrigger value="ho">Head Office</TabsTrigger>
-                        <TabsTrigger value="regional-1">Regional 1</TabsTrigger>
-                        <TabsTrigger value="regional-2">Regional 2</TabsTrigger>
-                        <TabsTrigger value="regional-3">Regional 3</TabsTrigger>
-                        <TabsTrigger value="regional-5">Regional 5</TabsTrigger>
-                        <TabsTrigger value="regional-7">Regional 7</TabsTrigger>
-                        <TabsTrigger value="regional-8">Regional 8</TabsTrigger>
+                        <TabsTrigger value="1">Head Office</TabsTrigger>
+                        <TabsTrigger value="2">Regional 1</TabsTrigger>
+                        <TabsTrigger value="3">Regional 2</TabsTrigger>
+                        <TabsTrigger value="4">Regional 3</TabsTrigger>
+                        <TabsTrigger value="5">Regional 5</TabsTrigger>
+                        <TabsTrigger value="6">Regional 7</TabsTrigger>
+                        <TabsTrigger value="7">Regional 8</TabsTrigger>
                     </TabsList>
                 </Tabs>
                 <span className="text-lg font-bold">
                     Overview Pengembangan SDM PTPN I (Persero) Regional
                 </span>
-                <RegionHCDevelopmentIndex />
+                <RegionHCDevelopmentIndex selectedRegion={selectedRegion} />
             </div>
         </>
     );

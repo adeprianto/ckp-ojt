@@ -7,15 +7,24 @@ import RegionHCDevelopmentCostPerUnit from './region-hc-development-cost-per-uni
 import RegionHCDevelopmentCostTraining from './region-hc-development-cost-training';
 import RegionHCDevelopmentLearningHoursPerUnit from './region-hc-development-learning-hours-per-unit';
 import RegionHCDevelopmentParticipantsPerUnit from './region-hc-development-participants-per-unit';
-import RegionHcDevelopmentPercentageToRkap from './region-hc-development-percentage-to-rkap';
+import RegionHCDevelopmentPercentageToRkap from './region-hc-development-percentage-to-rkap';
 
-export default function RegionHCDevelopmentIndex() {
+type RegionHCDevelopmentIndexProp = {
+    selectedRegion: number;
+};
+
+export default function RegionHCDevelopmentIndex({
+    selectedRegion,
+}: RegionHCDevelopmentIndexProp) {
     return (
         <>
             <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-6 flex min-h-[150px] items-center justify-center overflow-hidden rounded-sm border-[1.5px]">
                     <div className="w-[200px]">
-                        <RegionHcDevelopmentPercentageToRkap fullYear={true} />
+                        <RegionHCDevelopmentPercentageToRkap
+                            fullYear={true}
+                            selectedRegion={selectedRegion}
+                        />
                     </div>
                     <div className="grow">
                         <span className="block text-lg font-bold">
@@ -32,7 +41,10 @@ export default function RegionHCDevelopmentIndex() {
                 </div>
                 <div className="col-span-6 flex min-h-[150px] items-center justify-center overflow-hidden rounded-sm border-[1.5px]">
                     <div className="w-[200px]">
-                        <RegionHcDevelopmentPercentageToRkap fullYear={false} />
+                        <RegionHCDevelopmentPercentageToRkap
+                            selectedRegion={selectedRegion}
+                            fullYear={false}
+                        />
                     </div>
                     <div className="grow">
                         <span className="block text-lg font-bold">

@@ -207,6 +207,7 @@ export default function OverviewHCDevelopmentPercentageToRkap({
     }, [
         calculateRKAPValues,
         calculateRealizationValues,
+        fullYear,
         overviewRegionLearningCost,
     ]);
 
