@@ -93,7 +93,9 @@ export default function RegionHCDevelopmentIndex({
                 </div>
             </div>
             <div>
-                <RegionHCDevelopmentCostLppNonLppPerMonth />
+                <RegionHCDevelopmentCostLppNonLppPerMonth
+                    selectedRegion={selectedRegion}
+                />
             </div>
             <div>
                 <RegionHCDevelopmentCostOrganizer />
