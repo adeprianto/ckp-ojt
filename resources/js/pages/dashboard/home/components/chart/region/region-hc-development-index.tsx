@@ -98,7 +98,9 @@ export default function RegionHCDevelopmentIndex({
                 />
             </div>
             <div>
-                <RegionHCDevelopmentCostOrganizer />
+                <RegionHCDevelopmentCostOrganizer
+                    selectedRegion={selectedRegion}
+                />
             </div>
             <span className="text-lg font-bold">
                 Biaya Pengembangan SDM berdasarkan Pelatihan
