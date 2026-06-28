@@ -11,18 +11,30 @@ Highcharts.setOptions({
     },
 });
 
-const RegionHCDevelopmentParticipantsPerRegion: React.FC = () => {
+type RegionParticipantsPerRegion = {
+    unit_name: string;
+    total_participants: string;
+};
+
+type RegionHCDevelopmentParticipantsPerRegionProp = {
+    selectedRegion: number;
+};
+
+export default function RegionHCDevelopmentParticipantsPerRegion({
+    selectedRegion,
+}: RegionHCDevelopmentParticipantsPerRegionProp) {
     const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState<RegionParticipantsPerRegion[]>();
 
     useEffect(() => {
         const fetchOverviewData = async () => {
             setIsLoading(true);
 
             try {
-                // const response = await axios.get<OverviewRegionLearningCost[]>(
-                //     '/api/training/realization/region',
-                // );
-                // setOverviewRegionLearningCost(response.data);
+                const response = await axios.get<RegionParticipantsPerRegion[]>(
+                    `/api/region/${selectedRegion}/total-participants/unit`,
+                );
+                setData(response.data);
                 setIsLoading(false);
             } catch (e) {
                 console.error(e);
@@ -31,148 +43,144 @@ const RegionHCDevelopmentParticipantsPerRegion: React.FC = () => {
         };
 
         fetchOverviewData();
-    }, []);
+    }, [selectedRegion]);
 
     const chartOptions: Highcharts.Options = useMemo(() => {
-        return {
-            chart: {
-                zooming: {
-                    type: 'xy',
-                },
-            },
-            title: {
-                text: 'Jumlah Peserta per Unit',
-            },
-            xAxis: [
-                {
-                    // Use categories explicitly since we removed dataTable
-                    categories: [
-                        'UNIT A',
-                        'UNIT B',
-                        'UNIT C',
-                        'UNIT D',
-                        'UNIT E',
-                        'UNIT F',
-                        'UNIT G',
-                    ],
-                    crosshair: true,
-                },
-            ],
-            yAxis: [
-                {
-                    title: {
-                        text: 'Total Peserta',
-                        style: {
-                            color: 'var(--highcharts-color-1)',
-                        },
-                    },
-                    labels: {
-                        style: {
-                            color: 'var(--highcharts-color-1)',
-                        },
+        if (data) {
+            return {
+                chart: {
+                    zooming: {
+                        type: 'xy',
                     },
                 },
-            ],
-            tooltip: {
-                shared: true,
-                useHTML: true, // This is the magic flag that lets us use custom CSS and HTML
-
-                // --- 1. Outer Box Styling ---
-                backgroundColor: 'rgba(255, 255, 255, 0.95)', // Use 'rgba(30,30,30, 0.9)' for a dark theme
-                borderColor: '#e6e6e6',
-                borderWidth: 1,
-                borderRadius: 8, // Gives it nice rounded corners
-                padding: 12, // Gives the text room to breathe
-                shadow: true,
-                style: {
-                    color: '#333333', // Font color (use '#ffffff' for dark theme)
-                    fontFamily: 'sans-serif',
-                    fontSize: '13px',
+                title: {
+                    text: 'Jumlah Peserta per Unit',
                 },
-
-                // --- 2. Title (Header) ---
-                // Adds a bold title with a subtle line underneath
-                headerFormat:
-                    '<div style="font-size: 10px; font-weight: bold; border-bottom: 1px solid #eeeeee; padding-bottom: 6px; margin-bottom: 6px;">{point.key}</div><table style="width: 100%;">',
-
-                // --- 3. Body (The Data Rows) ---
-                // Uses a table to perfectly align the series name on the left and the value on the right
-                pointFormat:
-                    '<tr>' +
-                    '<td style="padding: 3px 15px 3px 0; font-size: 10px">' +
-                    '<span style="color:{series.color}; font-size: 10px;">\u25CF</span> {series.name}:' +
-                    '</td>' +
-                    '<td style="padding: 3px 0; text-align: right; font-size: 10px">' +
-                    '<b>Rp. {point.y:,.0f}</b>' +
-                    '</td>' +
-                    '</tr>',
-
-                // --- 4. Footer ---
-                footerFormat: '</table>',
-                valueDecimals: 0,
-            },
-            legend: {
-                enabled: false,
-                layout: 'vertical',
-                align: 'left',
-                x: 130,
-                verticalAlign: 'top',
-                y: 55,
-                floating: true,
-                backgroundColor: `color-mix(
-                var(--highcharts-neutral-color-40) 25%,
-                transparent
-            )`,
-            },
-            plotOptions: {
-                // Enable stacking for the column charts
-            },
-            series: [
-                {
-                    name: 'Total Peserta',
-                    type: 'column',
-                    yAxis: 0,
-                    data: [100, 20, 80, 35, 40, 50],
-                    marker: {
-                        enabled: false,
-                    },
-                    tooltip: {
-                        valuePrefix: 'Rp. ',
-                    },
-                },
-            ],
-            responsive: {
-                rules: [
+                xAxis: [
                     {
-                        condition: {
-                            maxWidth: 500,
-                        },
-                        chartOptions: {
-                            legend: {
-                                enabled: false,
-                                floating: false,
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom',
-                                x: 0,
-                                y: 0,
+                        // Use categories explicitly since we removed dataTable
+                        categories: data.map((val) => val.unit_name),
+                        crosshair: true,
+                    },
+                ],
+                yAxis: [
+                    {
+                        title: {
+                            text: 'Total Peserta',
+                            style: {
+                                color: 'var(--highcharts-color-1)',
                             },
-                            yAxis: [
-                                {
-                                    labels: {
-                                        align: 'right',
-                                        x: 0,
-                                        y: -6,
-                                    },
-                                    showLastLabel: false,
-                                },
-                            ],
+                        },
+                        labels: {
+                            style: {
+                                color: 'var(--highcharts-color-1)',
+                            },
                         },
                     },
                 ],
-            },
-        };
-    }, []);
+                tooltip: {
+                    shared: true,
+                    useHTML: true, // This is the magic flag that lets us use custom CSS and HTML
+
+                    // --- 1. Outer Box Styling ---
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)', // Use 'rgba(30,30,30, 0.9)' for a dark theme
+                    borderColor: '#e6e6e6',
+                    borderWidth: 1,
+                    borderRadius: 8, // Gives it nice rounded corners
+                    padding: 12, // Gives the text room to breathe
+                    shadow: true,
+                    style: {
+                        color: '#333333', // Font color (use '#ffffff' for dark theme)
+                        fontFamily: 'sans-serif',
+                        fontSize: '13px',
+                    },
+
+                    // --- 2. Title (Header) ---
+                    // Adds a bold title with a subtle line underneath
+                    headerFormat:
+                        '<div style="font-size: 10px; font-weight: bold; border-bottom: 1px solid #eeeeee; padding-bottom: 6px; margin-bottom: 6px;">{point.key}</div><table style="width: 100%;">',
+
+                    // --- 3. Body (The Data Rows) ---
+                    // Uses a table to perfectly align the series name on the left and the value on the right
+                    pointFormat:
+                        '<tr>' +
+                        '<td style="padding: 3px 15px 3px 0; font-size: 10px">' +
+                        '<span style="color:{series.color}; font-size: 10px;">\u25CF</span> {series.name}:' +
+                        '</td>' +
+                        '<td style="padding: 3px 0; text-align: right; font-size: 10px">' +
+                        '<b>{point.y:,.0f} Orang</b>' +
+                        '</td>' +
+                        '</tr>',
+
+                    // --- 4. Footer ---
+                    footerFormat: '</table>',
+                    valueDecimals: 0,
+                },
+                legend: {
+                    enabled: false,
+                    layout: 'vertical',
+                    align: 'left',
+                    x: 130,
+                    verticalAlign: 'top',
+                    y: 55,
+                    floating: true,
+                    backgroundColor: `color-mix(
+                var(--highcharts-neutral-color-40) 25%,
+                transparent
+            )`,
+                },
+                plotOptions: {
+                    // Enable stacking for the column charts
+                },
+                series: [
+                    {
+                        name: 'Total Peserta',
+                        type: 'column',
+                        yAxis: 0,
+                        data: data.map((val) => val.total_participants),
+                        marker: {
+                            enabled: false,
+                        },
+                        tooltip: {
+                            valuePrefix: 'Rp. ',
+                        },
+                    },
+                ],
+                responsive: {
+                    rules: [
+                        {
+                            condition: {
+                                maxWidth: 500,
+                            },
+                            chartOptions: {
+                                legend: {
+                                    enabled: false,
+                                    floating: false,
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom',
+                                    x: 0,
+                                    y: 0,
+                                },
+                                yAxis: [
+                                    {
+                                        labels: {
+                                            align: 'right',
+                                            x: 0,
+                                            y: -6,
+                                        },
+                                        showLastLabel: false,
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+            };
+        }
+
+        return {};
+    }, [data]);
 
     // 3. Render using the new JSX-native <Chart /> component
     return isLoading ? (
@@ -194,6 +202,4 @@ const RegionHCDevelopmentParticipantsPerRegion: React.FC = () => {
             />
         </div>
     );
-};
-
-export default RegionHCDevelopmentParticipantsPerRegion;
+}

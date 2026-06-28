@@ -111,18 +111,26 @@ export default function RegionHCDevelopmentIndex({
                 />
             </div>
             <div>
-                <RegionHCDevelopmentCostTraining />
+                <RegionHCDevelopmentCostTraining
+                    selectedRegion={selectedRegion}
+                />
             </div>
             <div>
-                <RegionHCDevelopmentCostBodLevel />
+                <RegionHCDevelopmentCostBodLevel
+                    selectedRegion={selectedRegion}
+                />
             </div>
             <span className="text-lg font-bold">Jumlah Peserta</span>
             <div>
-                <RegionHCDevelopmentParticipantsPerUnit />
+                <RegionHCDevelopmentParticipantsPerUnit
+                    selectedRegion={selectedRegion}
+                />
             </div>
             <span className="text-lg font-bold">Jumlah Jam Pembelajaran</span>
             <div>
-                <RegionHCDevelopmentLearningHoursPerUnit />
+                <RegionHCDevelopmentLearningHoursPerUnit
+                    selectedRegion={selectedRegion}
+                />
             </div>
         </>
     );
