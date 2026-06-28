@@ -64,7 +64,9 @@ export default function RegionHCDevelopmentIndex({
                 Biaya Pengembangan SDM per Unit
             </span>
             <div>
-                <RegionHCDevelopmentCostPerUnit />
+                <RegionHCDevelopmentCostPerUnit
+                    selectedRegion={selectedRegion}
+                />
             </div>
             <span className="text-lg font-bold">
                 Biaya Pengembangan SDM berdasarkan Penyelenggara
