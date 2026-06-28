@@ -9,6 +9,7 @@ use App\Models\Region;
 use App\Models\Training;
 use App\Models\TrainingRealization;
 use App\Models\TrainingRealizationDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
@@ -340,20 +341,37 @@ class TrainingController extends Controller
         }
     }
 
-    public function showRealizationByRegion()
+    public function showRealizationByRegion(Request $request)
     {
-        $realizationByRegion = DB::table('training_realization_details as a')
-            ->rightJoin('regions as b', function ($join) {
-                $join->on('a.region_id', '=', 'b.id');
-            })
-            ->select(
-                'b.region_name',
-                DB::raw('IFNULL(SUM(a.learning_hours), 0) AS total_learning_hours'),
-                DB::raw('IFNULL(SUM(a.cost), 0) AS total_cost'),
-                DB::raw('COUNT(a.id) AS total_participants')
-            )
-            ->groupBy('b.id', 'b.region_name')
-            ->get();
+        if ($request->isFullYear) {
+            $realizationByRegion = DB::table('training_realization_details as a')
+                ->rightJoin('regions as b', function ($join) {
+                    $join->on('a.region_id', '=', 'b.id');
+                })
+                ->select(
+                    'b.region_name',
+                    DB::raw('IFNULL(SUM(a.learning_hours), 0) AS total_learning_hours'),
+                    DB::raw('IFNULL(SUM(a.cost), 0) AS total_cost'),
+                    DB::raw('COUNT(a.id) AS total_participants')
+                )
+                ->groupBy('b.id', 'b.region_name')
+                ->get();
+        } else {
+            $realizationByRegion = DB::table('training_realization_details as a')
+                ->rightJoin('regions as b', function ($join) {
+                    $join->on('a.region_id', '=', 'b.id')
+                        ->where('a.training_start_date', '<=', Carbon::now()->endOfMonth());
+                })
+                ->select(
+                    'b.region_name',
+                    DB::raw('IFNULL(SUM(a.learning_hours), 0) AS total_learning_hours'),
+                    DB::raw('IFNULL(SUM(a.cost), 0) AS total_cost'),
+                    DB::raw('COUNT(a.id) AS total_participants')
+                )
+                ->groupBy('b.id', 'b.region_name')
+                ->get();
+        }
+
 
         return response()->json($realizationByRegion, Response::HTTP_OK);
     }

@@ -2,7 +2,7 @@ import { Chart } from '@highcharts/react';
 import axios from 'axios';
 import * as Highcharts from 'highcharts';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { REALIZATION_PER_REGIONAL, RKAP_PER_REGIONAL } from '@/lib/rkap';
 
 Highcharts.setOptions({
@@ -30,7 +30,7 @@ const OverviewHCDevelopmentCostPerRegion: React.FC = () => {
 
             try {
                 const response = await axios.get<OverviewRegionLearningCost[]>(
-                    '/api/training/realization/region',
+                    '/api/training/realization/region?isFullYear=true',
                 );
                 setOverviewRegionLearningCost(response.data);
                 setIsLoading(false);
@@ -43,86 +43,93 @@ const OverviewHCDevelopmentCostPerRegion: React.FC = () => {
         fetchOverviewData();
     }, []);
 
-    const calculateRKAPValues = (data: typeof RKAP_PER_REGIONAL) => {
-        const mData: Record<string, number> = {};
+    const calculateRKAPValues = useCallback(
+        (data: typeof RKAP_PER_REGIONAL) => {
+            const mData: Record<string, number> = {};
 
-        Object.values(data).forEach((monthData) => {
-            for (const [key, totals] of Object.entries(monthData)) {
-                // If the key doesn't exist yet, initialize it to 0
-                if (!(key in mData)) {
-                    mData[key] = 0;
+            Object.values(data).forEach((monthData) => {
+                for (const [key, totals] of Object.entries(monthData)) {
+                    // If the key doesn't exist yet, initialize it to 0
+                    if (!(key in mData)) {
+                        mData[key] = 0;
+                    }
+
+                    // Add the current month's value to the running total
+                    mData[key] += totals.rkap;
                 }
+            });
 
-                // Add the current month's value to the running total
-                mData[key] += totals.rkap;
-            }
-        });
+            return [
+                mData['ho'] / 1000,
+                mData['reg1'] / 1000,
+                mData['reg2'] / 1000,
+                mData['reg3'] / 1000,
+                mData['reg5'] / 1000,
+                mData['reg7'] / 1000,
+                mData['reg8'] / 1000,
+            ];
+        },
+        [],
+    );
 
-        return [
-            mData['ho'] / 1000,
-            mData['reg1'] / 1000,
-            mData['reg2'] / 1000,
-            mData['reg3'] / 1000,
-            mData['reg5'] / 1000,
-            mData['reg7'] / 1000,
-            mData['reg8'] / 1000,
-        ];
-    };
+    const calculateRealizationValues = useCallback(
+        (
+            data: typeof REALIZATION_PER_REGIONAL,
+            overviewRegionLearningCost: OverviewRegionLearningCost[],
+        ) => {
+            const mData: Record<string, number> = {};
 
-    const calculateRealizationValues = (
-        data: typeof REALIZATION_PER_REGIONAL,
-    ) => {
-        const mData: Record<string, number> = {};
+            Object.values(data).forEach((monthData) => {
+                for (const [key, totals] of Object.entries(monthData)) {
+                    // If the key doesn't exist yet, initialize it to 0
+                    if (!(key in mData)) {
+                        mData[key] = 0;
+                    }
 
-        Object.values(data).forEach((monthData) => {
-            for (const [key, totals] of Object.entries(monthData)) {
-                // If the key doesn't exist yet, initialize it to 0
-                if (!(key in mData)) {
-                    mData[key] = 0;
+                    // Add the current month's value to the running total
+                    mData[key] += totals.lpp + totals.nonLpp;
                 }
+            });
 
-                // Add the current month's value to the running total
-                mData[key] += totals.lpp + totals.nonLpp;
-            }
-        });
+            overviewRegionLearningCost?.forEach((value) => {
+                switch (value.region_name) {
+                    case 'SUPPCO HO':
+                        mData['ho'] += parseInt(value.total_cost.toString());
+                        break;
+                    case 'SUPPCO REG 01':
+                        mData['reg1'] += parseInt(value.total_cost.toString());
+                        break;
+                    case 'SUPPCO REG 02':
+                        mData['reg2'] += parseInt(value.total_cost.toString());
+                        break;
+                    case 'SUPPCO REG 03':
+                        mData['reg3'] += parseInt(value.total_cost.toString());
+                        break;
+                    case 'SUPPCO REG 04':
+                    case 'SUPPCO REG 05':
+                        mData['reg5'] += parseInt(value.total_cost.toString());
+                        break;
+                    case 'SUPPCO REG 07':
+                        mData['reg7'] += parseInt(value.total_cost.toString());
+                        break;
+                    case 'SUPPCO REG 08':
+                        mData['reg8'] += parseInt(value.total_cost.toString());
+                        break;
+                }
+            });
 
-        overviewRegionLearningCost?.forEach((value) => {
-            switch (value.region_name) {
-                case 'SUPPCO HO':
-                    mData['ho'] += parseInt(value.total_cost.toString());
-                    break;
-                case 'SUPPCO REG 01':
-                    mData['reg1'] += parseInt(value.total_cost.toString());
-                    break;
-                case 'SUPPCO REG 02':
-                    mData['reg2'] += parseInt(value.total_cost.toString());
-                    break;
-                case 'SUPPCO REG 03':
-                    mData['reg3'] += parseInt(value.total_cost.toString());
-                    break;
-                case 'SUPPCO REG 04':
-                case 'SUPPCO REG 05':
-                    mData['reg5'] += parseInt(value.total_cost.toString());
-                    break;
-                case 'SUPPCO REG 07':
-                    mData['reg7'] += parseInt(value.total_cost.toString());
-                    break;
-                case 'SUPPCO REG 08':
-                    mData['reg8'] += parseInt(value.total_cost.toString());
-                    break;
-            }
-        });
-
-        return [
-            mData['ho'] / 1000,
-            mData['reg1'] / 1000,
-            mData['reg2'] / 1000,
-            mData['reg3'] / 1000,
-            mData['reg5'] / 1000,
-            mData['reg7'] / 1000,
-            mData['reg8'] / 1000,
-        ];
-    };
+            return [
+                mData['ho'] / 1000,
+                mData['reg1'] / 1000,
+                mData['reg2'] / 1000,
+                mData['reg3'] / 1000,
+                mData['reg5'] / 1000,
+                mData['reg7'] / 1000,
+                mData['reg8'] / 1000,
+            ];
+        },
+        [],
+    );
 
     const chartOptions: Highcharts.Options = useMemo(() => {
         if (
@@ -237,6 +244,7 @@ const OverviewHCDevelopmentCostPerRegion: React.FC = () => {
                         yAxis: 0,
                         data: calculateRealizationValues(
                             REALIZATION_PER_REGIONAL,
+                            overviewRegionLearningCost,
                         ),
                         tooltip: { valuePrefix: 'Rp. ' },
                     },
@@ -275,7 +283,11 @@ const OverviewHCDevelopmentCostPerRegion: React.FC = () => {
         }
 
         return {};
-    }, [overviewRegionLearningCost]);
+    }, [
+        calculateRKAPValues,
+        calculateRealizationValues,
+        overviewRegionLearningCost,
+    ]);
 
     // 3. Render using the new JSX-native <Chart /> component
     return isLoading ? (

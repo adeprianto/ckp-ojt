@@ -1,9 +1,9 @@
 import OverviewHCDevelopmentCostBodLevel from './overview-hc-development-cost-bod-level';
-import OverviewHCDevelopmentCost from './overview-hc-development-cost-chart';
 import OverviewHCDevelopmentCostLearningSector from './overview-hc-development-cost-learning-sector';
 import OverviewHCDevelopmentCostLppNonLpp from './overview-hc-development-cost-lpp-non-lpp';
 import OverviewHCDevelopmentCostLppNonLppPerMonth from './overview-hc-development-cost-lpp-non-lpp-per-month';
 import OverviewHCDevelopmentCostOrganizer from './overview-hc-development-cost-organizer';
+import OverviewHCDevelopmentCostPerMonth from './overview-hc-development-cost-per-month';
 import OverviewHCDevelopmentCostPerRegion from './overview-hc-development-cost-per-region';
 import OverviewHCDevelopmentCostTraining from './overview-hc-development-cost-training';
 import OverviewHCDevelopmentLearningHoursPerRegion from './overview-hc-development-learning-hours-per-region';
@@ -60,7 +60,7 @@ export default function OverviewHCDevelopmentIndex() {
                 <OverviewHCDevelopmentCostPerRegion />
             </div>
             <div>
-                <OverviewHCDevelopmentCost />
+                <OverviewHCDevelopmentCostPerMonth />
             </div>
             <span className="text-lg font-bold">
                 Biaya Pengembangan SDM berdasarkan Penyelenggara
