@@ -1,125 +1,46 @@
-import { Head, useForm } from '@inertiajs/react';
-import type { SubmitEventHandler } from 'react';
-import InputError from '@/components/input-error';
-import PasswordInput from '@/components/password-input';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
-import { request } from '@/routes/password';
+import { LoginForm } from '@/pages/auth/login-form';
 
-type Props = {
-    status?: string;
-    canResetPassword: boolean;
-    canRegister: boolean;
-};
-
-export default function Login({
-    status,
-    canResetPassword,
-    canRegister,
-}: Props) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        username: '',
-        password: '',
-        remember: false,
-    });
-
-    const onLogin: SubmitEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault();
-
-        post('/login');
-    };
-
+export default function Login() {
     return (
-        <>
-            <Head title="Log in" />
-
-            <form onSubmit={onLogin} className="flex flex-col gap-6">
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="username">Username</Label>
-                        <Input
-                            id="username"
-                            type="username"
-                            name="username"
-                            value={data.username}
-                            onChange={(e) =>
-                                setData('username', e.target.value)
-                            }
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="username"
-                            placeholder="Username"
+        <div className="grid min-h-svh lg:grid-cols-2">
+            <div className="flex flex-col gap-4 p-6 md:p-10">
+                <div className="flex justify-center gap-2 md:justify-start">
+                    <div className="flex flex-1 items-end justify-between">
+                        <img
+                            src="/assets/images/danantara.png"
+                            alt="ptpn1"
+                            className="w-26"
                         />
-                        <InputError message={errors.username} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
-                            {canResetPassword && (
-                                <TextLink
-                                    href={request()}
-                                    className="ml-auto text-sm"
-                                    tabIndex={5}
-                                >
-                                    Forgot password?
-                                </TextLink>
-                            )}
+                        <div className="flex items-end gap-4">
+                            <img
+                                src="/assets/images/ptpn1.png"
+                                alt="ptpn1"
+                                className="w-9"
+                            />
+                            <img
+                                src="/assets/images/ptpn3.png"
+                                alt="ptpn1"
+                                className="w-16"
+                            />
                         </div>
-                        <PasswordInput
-                            id="password"
-                            name="password"
-                            value={data.password}
-                            onChange={(e) =>
-                                setData('password', e.target.value)
-                            }
-                            required
-                            tabIndex={2}
-                            autoComplete="current-password"
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
                     </div>
-
-                    <div className="flex items-center space-x-3">
-                        <Checkbox id="remember" name="remember" tabIndex={3} />
-                        <Label htmlFor="remember">Remember me</Label>
-                    </div>
-
-                    <Button
-                        type="submit"
-                        className="mt-4 w-full"
-                        tabIndex={4}
-                        disabled={processing}
-                        data-test="login-button"
-                    >
-                        {processing && <Spinner />}
-                        Log in
-                    </Button>
                 </div>
-
-                {canRegister && (
-                    <div className="text-center text-sm text-muted-foreground">
-                        Don't have an account?{' '}
-                        <TextLink href={register()} tabIndex={5}>
-                            Sign up
-                        </TextLink>
+                <div className="flex flex-1 items-center justify-center">
+                    <div className="w-full max-w-xs">
+                        <LoginForm />
                     </div>
-                )}
-            </form>
-
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
                 </div>
-            )}
-        </>
+            </div>
+            <div className="relative hidden bg-muted lg:flex lg:items-center lg:justify-center lg:p-20">
+                <div className="relative rounded-lg bg-white p-8">
+                    <img
+                        src="/assets/images/agrow-track-1.svg"
+                        alt="Image"
+                        className="inset-0 object-cover dark:brightness-[0.2] dark:grayscale"
+                    />
+                </div>
+            </div>
+        </div>
     );
 }
 

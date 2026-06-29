@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
-Route::inertia('/', 'welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
+Route::get('/', function () {
+    return auth()->check()
+        ? to_route('dashboard.home')
+        : to_route('login'); // Or your login page
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('/dashboard')->group(function () {
