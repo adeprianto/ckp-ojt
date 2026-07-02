@@ -61,7 +61,10 @@ export const organizersColumns: ColumnDef<Organizer>[] = [
         ),
         cell: ({ row }) => (
             <LongText className="max-w-56 ps-3">
-                {row.original.is_ptpn_group ? 'LPP' : 'Non LPP'}
+                {row.original.is_ptpn_group &&
+                row.original.is_ptpn_group.toString() === '1'
+                    ? 'LPP'
+                    : 'Non LPP'}
             </LongText>
         ),
         meta: {
