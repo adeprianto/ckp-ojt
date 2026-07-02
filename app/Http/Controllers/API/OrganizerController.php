@@ -18,6 +18,11 @@ class OrganizerController extends Controller
     {
         $organizers = Organizer::all();
 
+        $organizers = $organizers->map(function ($organizer) {
+            $organizer['is_ptpn_group'] = $organizer->is_ptpn_group == '1' ? true : false;
+            return $organizer;
+        });
+
         return response()->json($organizers, Response::HTTP_OK);
     }
 
